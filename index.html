@@ -4,9 +4,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Petits Plats</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="public/css/style.css">
+    <title>Les petits plats</title>
 </head>
 <body>
-    
+    <div class="container-fluid p-0">
+    <!--TITRE-->
+        <div class="row mb-3">
+            <div class="d-flex flex-column m-auto">
+                <img class="logo-site align-self-center mb-1" src="public/logos/logo-site.svg" >
+                <img class="logo-title" src="public/logos/logo-title.svg" >
+            </div>
+        </div>
+    <!--BARRE DE RECHERCHE-->
+        <div class="mb-3">
+            <input class="search-input" value="Rechercher un ingrédient, appareil, ustensiles ou une recette"></input>
+            <img src="public/logos/logo-search.svg" />
+        </div>
+    <!--recherche effectué-->
+
+    <!--BOUTONS-->
+    <div class="mb-3">
+        <div class="btn-group mr-3">
+            <input type="text" name="ingredients" id="ingredients" value="Ingredients" class="btn-lg btn-primary"></input>
+            <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+            </div>
+        </div>
+        <div class="btn-group mr-3">
+            <input type="text" name="apparatus" id="apparatus" value="Appareil" class="btn-lg btn-success"></input>
+            <button type="button" class="btn btn-lg btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+            </div>
+        </div>
+        <div class="btn-group mr-3">
+            <input type="text" name="utensils" id="utensils" value="Ustensiles" class="btn-lg btn-danger"></input>
+            <button type="button" class="btn btn-lg btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+            </div>
+        </div>
+    </div>
+       <!--GRILLE-->
+        <div class="grid">
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+        </div>
+    </div>
+    <script src="dist/main.js" ></script>
 </body>
 </html>
