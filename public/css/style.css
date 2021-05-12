@@ -1,0 +1,80 @@
+/* GENERAL */
+body {
+    --blue: #007bff;
+    --green: #28a745;
+    --red: #dc3545;
+}
+
+#main {
+    width: 85%;
+}
+
+.logo-site {
+    width: 50px;
+}
+
+.logo-title {
+    width: 268px;
+}
+
+/* SEARCH BAR */
+.search-input {
+    height: 69px;
+    border: none;
+    border-radius: 5px;
+    background-color: #E7E7E7;
+    padding-left: 22px;
+    color: black;
+    font-size: 18px;
+    font-family: 'Lato', sans-serif;
+}
+
+/* INPUTS */
+.badges {
+    display: none;
+}
+
+.dropdown-header {
+    position: relative;
+    padding-bottom: 0;
+}
+
+.dropdown-arrow {
+    margin-left: -40px;
+    cursor: pointer;
+}
+
+.dropdown-body {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    height: 0;
+    overflow: hidden;
+    background-color: var(--blue);
+}
+
+/* INPUTS EFFECTS */
+
+
+/* GRID */
+.grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 30%);
+    gap: 5%;
+}
+
+.grid-item {
+    width: 100%;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.grid-img {
+    object-fit: cover;
+}
+
+.img {
+    width: 100%;
+}

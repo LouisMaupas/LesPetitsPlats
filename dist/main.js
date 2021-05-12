@@ -1,0 +1,1 @@
+(()=>{"use strict";document.querySelectorAll(".inputs").forEach((e=>e.addEventListener("input",(e=>{console.log(e.currentTarget.parentNode),console.log(e.currentTarget.parentNode.parentNode.children[1])}))))})();
