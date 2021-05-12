@@ -11,65 +11,202 @@
     <title>Les petits plats</title>
 </head>
 <body>
-    <div class="container-fluid p-0">
+    <div id="test" ></div>
+    <div id="main" class="container-fluid mt-5 p-0">
     <!--TITRE-->
         <div class="row mb-3">
             <div class="d-flex flex-column m-auto">
-                <img class="logo-site align-self-center mb-1" src="public/logos/logo-site.svg" >
-                <img class="logo-title" src="public/logos/logo-title.svg" >
+                <img class="logo-site align-self-center mb-1" src="public/logos/logo-site.svg" alt="Logo du site">
+                <img class="logo-title" src="public/logos/logo-title.svg" alt="Logo du site">
             </div>
         </div>
     <!--BARRE DE RECHERCHE-->
-        <div class="mb-3">
-            <input class="search-input" value="Rechercher un ingrédient, appareil, ustensiles ou une recette"></input>
-            <img src="public/logos/logo-search.svg" />
-        </div>
-    <!--recherche effectué-->
-
+        <nav class="navbar navbar-light bg-light">
+            <form class="container-fluid w-100">
+              <div class="input-group">
+                <input type="text" class="form-control search-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" aria-label="Username" aria-describedby="basic-addon1">
+                <span class="input-group-text" id="basic-addon1">
+                    <img id="logo-search" src="public/logos/logo-search.svg" alt="logo barre de recherche"/>
+                </span>
+              </div>
+            </form>
+          </nav>
     <!--BOUTONS-->
-    <div class="mb-3">
-        <div class="btn-group mr-3">
-            <input type="text" name="ingredients" id="ingredients" value="Ingredients" class="btn-lg btn-primary"></input>
-            <button type="button" class="btn btn-lg btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
+    <div class="mb-4 mt-3 d-flex">
+        <div>
+            <div class="badges mb-2">
+                <button type="button" class="btn btn-primary">
+                    <span>Coco</span>  
+                    <img src="public/logos/logo-cross.svg" class="ml-2">
+                </button>  
+            </div>
+
+
+            <div class="dropdown">
+                <div class="dropdown-header mr-3">
+                    <input type="text" name="ingredients" id="ingredients" value="Ingredients" class="btn-lg btn-primary inputs"/>
+                    <img class="dropdown-arrow" src="public/logos/logo-arrow-top.svg" />
+                </div>
+                <div class="dropdown-body flex-column text-white">
+                        <span>COL 1mot 1</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>COL 1mot 2</span>
+                        <span>COL 2 mot 1</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>COL 2 mot 2</span>
+                        <span>COL 3 mot 1</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span>mot 2</span>
+                        <span> COL3 mot 2</span>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <div class="badges mb-2">
+                <button type="button" class="btn btn-success">
+                    <span>Four</span>  
+                    <img src="public/logos/logo-cross.svg" class="ml-2">
+                </button>  
+            </div>
+            <div class="btn-group mr-3">
+                <input type="text" name="apparatus" id="apparatus" value="Appareil" class="btn-lg btn-success"/>
+                <button type="button" class="btn btn-lg btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="sr-only">
+                      Toggle Dropdown
+                    </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">
+                        Action
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="btn-group mr-3">
-            <input type="text" name="apparatus" id="apparatus" value="Appareil" class="btn-lg btn-success"></input>
-            <button type="button" class="btn btn-lg btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
+        <div>
+            <div class="badges mb-2">
+                <button type="button" class="btn btn-danger">
+                    <span>Fourchette</span>  
+                    <img src="public/logos/logo-cross.svg" class="ml-2">
+                </button>  
             </div>
-        </div>
-        <div class="btn-group mr-3">
-            <input type="text" name="utensils" id="utensils" value="Ustensiles" class="btn-lg btn-danger"></input>
-            <button type="button" class="btn btn-lg btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
+            <div class="btn-group mr-3">
+                <input type="text" name="utensils" id="utensils" value="Ustensiles" class="btn-lg btn-danger"/>
+                <button type="button" class="btn btn-lg btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="sr-only">
+                      Toggle Dropdown
+                    </span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">
+                        Action
+                    </a>
+                </div>
             </div>
-        </div>
+        </div>       
     </div>
        <!--GRILLE-->
         <div class="grid">
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+                <div class="grid-content container-fluid p-4">
+                    <div class="row mb-3">
+                        <div class="grid-title col-9">
+                            Limonade de Coco
+                        </div>
+                        <div class="grid-timer">
+                            <img src="public/logos/logo-clock.svg" />
+                            10 min
+                        </div>
+                    </div>
+                    <div class="row d-flex">
+                        <div class="grid-ingredient col-5">
+                            <div class="ingredient">
+                                <span class="food">
+                                    Lait de coco:
+                                </span>
+                                <span class="quantity">
+                                    400ml
+                                </span>
+                            </div>
+                            <div class="ingredient">
+                                <span class="food">
+                                    Jus de citron:
+                                </span>
+                                <span class="quantity">
+                                    2
+                                </span>
+                            </div>
+                        </div>
+                        <div class="grid-recipe col-7">
+                            Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
+            <div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+            </div>
         </div>
     </div>
     <script src="dist/main.js" ></script>
