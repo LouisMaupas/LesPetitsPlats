@@ -29,7 +29,8 @@ function dropdown () {
           console.log(`Erreur dans le switch`);       
       }
       input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`);
-      header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg")     ;
+      header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg");
+      header.classList.remove('dropdown-header--white')
   }))
 
   /* fermeture*/
@@ -42,7 +43,9 @@ function dropdown () {
     input.parentNode.parentNode.children[1].classList.remove('is-open');
     input.classList.remove('input--open');
     input.setAttribute('placeholder', inputPlaceholder);
-    input.setAttribute("src", "./public/logos/logo-arrow-bot.svg");
+    console.log(input)
+    input.parentNode.children[1].setAttribute("src", "./public/logos/logo-arrow-bot.svg");
+    input.parentNode.classList.add('dropdown-header--white');
     }
   }
 }
