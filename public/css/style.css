@@ -54,6 +54,11 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
+.dropdown-header-white ::placeholder {
+    color: white;
+
+}
+
 .dropdown-arrow {
     margin-left: -40px;
     cursor: pointer;
