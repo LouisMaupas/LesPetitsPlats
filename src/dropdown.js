@@ -14,7 +14,21 @@ function dropdown () {
     //  dropdowns.forEach(dropdowns => dropdowns.style.cursor = "not-allowed");
       input.classList.add('input--open');
       body.classList.add('is-open');
-      input.setAttribute('placeholder', 'ATTENTION CA DEPEND Rechercher un ingrédient');
+      let newPlaceHolder
+      switch(inputPlaceholder) {
+        case 'Ingredients':
+          newPlaceHolder = 'ingrédient';
+          break;
+        case 'Appareil':
+          newPlaceHolder = 'appareil';
+          break; 
+        case 'Ustensiles':
+          newPlaceHolder = 'ustensile';
+          break;
+        default:
+          console.log(`Erreur dans le switch`);       
+      }
+      input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`);
       header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg")     ;
   }))
 
@@ -32,4 +46,5 @@ function dropdown () {
     }
   }
 }
+
 export {dropdown}
