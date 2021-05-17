@@ -13,7 +13,10 @@ function dropdown () {
       inputPlaceholder = input.placeholder;
     //  dropdowns.forEach(dropdowns => dropdowns.style.cursor = "not-allowed");
       input.classList.add('input--open');
-      body.classList.add('is-open');
+      setTimeout(() => {
+        body.classList.add('is-open'); 
+       }, 500);
+
       let newPlaceHolder
       switch(inputPlaceholder) {
         case 'Ingredients':
