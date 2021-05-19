@@ -1,10 +1,13 @@
 import { dropdown } from "./dropdown"
 dropdown()
 
-// TODO : Barre de recherche bouton loupe mal implenté 
-
 // TODO L'image de la fleche des dropdowns fait que le dropbody a 100% est < a drop header
+//         => Refaire sans BS
 
-// TODO : BLOQUER LA POSSIBILITER DE CLIQUER 2 DROPDOWN EN MEME TEMPS (sur un 2nd alores que le 1er est toujorus ouvert)
-//          + BUG si on re-clique sur l'input deja ouvert "recher un undefined"
+// mettre sur git page
+
+// TODO : BLOQUER LA POSSIBILITER DE CLIQUER 2 DROPDOWN EN MEME TEMPS
+//      => dans la fonction d'ouvertur, juste avant d'ouvrir, faire une boucle sur TOUS les dropdowns pour tous les fermer 
+
+//TODO fonction recherche basique JS pour ressortir tous les éléments du fichiers JSON
 

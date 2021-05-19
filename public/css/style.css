@@ -5,6 +5,10 @@ body {
     --red: #dc3545;
 }
 
+body * {
+    box-sizing: border-box;
+}
+
 #main {
     width: 85%;
 }
@@ -27,6 +31,12 @@ body {
     color: black;
     font-size: 18px;
     font-family: 'Lato', sans-serif;
+}
+
+#basic-addon1 {
+    background-color: #e7e7e7;
+    border-radius: 0;
+    border: 0;
 }
 
 .navbar {
@@ -58,6 +68,7 @@ body {
     width: 100%;
 }
 
+
 .inputs:focus {
     width: 800px;
     transition-property: width;
@@ -81,6 +92,7 @@ body {
 .dropdown-arrow {
     margin-left: -40px;
     cursor: pointer;
+    /* zindex et position relative */
 }
 
 .dropdown-body {

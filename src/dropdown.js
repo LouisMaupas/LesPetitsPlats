@@ -10,6 +10,7 @@ function dropdown () {
       header = target.parentNode,
       input = target.parentNode.children[0],
       body = target.parentNode.parentNode.children[1];
+      // TODO Si le mot-clé recherche est deja la ne rien faire
       inputPlaceholder = input.placeholder;
     //  dropdowns.forEach(dropdowns => dropdowns.style.cursor = "not-allowed");
       input.classList.add('input--open');
@@ -38,6 +39,9 @@ function dropdown () {
 
   /* fermeture*/
   let input;
+
+  /*TODO Au moment de faire l'ouverture d'un dropdown on parcours une boucle sur les 3 dropdown 
+  et on ferme les 3 */
   window.onclick = function hideDropdown (e) {
     if (e.path[0].classList.contains('inputs')) {
       return input = e.target.parentNode.children[0];
