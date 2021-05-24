@@ -1,8 +1,9 @@
 /* GENERAL */
 body {
     --blue: #007bff;
-    --green: #28a745;
-    --red: #dc3545;
+    --green: #68D9A4;
+
+    --red: #ED6454;
 }
 
 body * {
@@ -49,6 +50,27 @@ body * {
 
 /* INPUTS */
 
+.button {
+    border-radius: 0.3rem;
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    color: #fff;
+}
+
+.button--red {
+    background-color: var(--red);
+}
+
+.button--green {
+    background-color: var(--green);
+}
+
+.button--blue {
+    background-color: var(--blue);
+}
+
 .drops-and-badges {
     margin-right: 20px;
 }
@@ -85,7 +107,7 @@ body * {
 }
 
 .dropdown-arrow {
-    margin-left: -40px;
+    margin-left: -36px;
     cursor: pointer;
     /* zindex et position relative */
 }

@@ -1,17 +1,20 @@
+/**
+ * Gère le déploiement des dropdowns ainsi que leurs badges
+ */
 function dropdown () {
   const inputs = document.querySelectorAll('.inputs');
-  let inputPlaceholder;
-
+  let A, B; // A = le placeHolder du 1er input et B le placeholder du 2nd input si on click sur un 2nd
   /* OUVERTURE */
   inputs.forEach(inputs => inputs.addEventListener('click', (e) => {
     const target = e.currentTarget,
       header = target.parentNode,
       input = target.parentNode.children[0],
       body = target.parentNode.parentNode.children[1];
-      // TODO Si le mot-clé recherche est deja la ne rien faire
-      console.log(inputPlaceholder)
-      inputPlaceholder = input.placeholder;
-      console.log(inputPlaceholder)
+      if (A != undefined) {
+        B = input.placeholder
+      }
+      A = input.placeholder;
+      console.log(A, B)
       hideDropdonw()
       input.classList.add('input--open');
       setTimeout(() => {
@@ -19,7 +22,7 @@ function dropdown () {
        }, 500);
 
       let newPlaceHolder
-      switch(inputPlaceholder) {
+      switch(A) {
         case 'Ingredients':
           newPlaceHolder = 'ingrédient';
           break;
@@ -32,7 +35,9 @@ function dropdown () {
         default:
           console.log(`Erreur dans le switch`);       
       }
+      if (input.placeholder.indexOf('Recherche') == -1) {
       input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`);
+      }
       header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg");
       header.classList.remove('dropdown-header--white')
   }))
@@ -43,7 +48,20 @@ function dropdown () {
     inputs.forEach(input => {
       input.parentNode.parentNode.children[1].classList.remove('is-open');
       input.classList.remove('input--open');
-      input.setAttribute('placeholder', inputPlaceholder);
+      if (B != undefined) {
+        if (!input.placeholder.indexOf('Rechercher')) {
+          input.setAttribute('placeholder', A);
+          A = undefined
+        } else {
+          input.setAttribute('placeholder', B);
+          B = undefined
+        }
+      } else {
+        if (!input.placeholder.indexOf('Rechercher')) {
+          input.setAttribute('placeholder', A);
+          A = undefined
+        }
+      }
       input.parentNode.children[1].setAttribute("src", "./public/logos/logo-arrow-bot.svg");
       input.parentNode.classList.add('dropdown-header--white');
     })
@@ -54,6 +72,8 @@ function dropdown () {
       hideDropdonw()
     }
    }
+
+   /* affichages des badges */
 
 }
 
