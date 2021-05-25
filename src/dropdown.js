@@ -10,21 +10,21 @@ function dropdown () {
       header = target.parentNode,
       input = target.parentNode.children[0],
       body = target.parentNode.parentNode.children[1];
-      if (A != undefined) {
-        B = input.placeholder
+      if (A != undefined) { // si A est déjà associé à un placeholder
+        B = input.placeholder // alors B = le placeholder du clickEvent
+      } else {
+        A = input.placeholder; // Sinon c'est A qui est = au placeholder du clickEvent
       }
-      A = input.placeholder;
-      console.log(A, B)
-      hideDropdonw()
+      hideDropdonw() // On ferme tous les dropdowns
       input.classList.add('input--open');
       setTimeout(() => {
         body.classList.add('is-open'); 
        }, 500);
 
-      let newPlaceHolder
+      let newPlaceHolder // variable qui va se placer dans le placeholder de l'input du dropdown déplié 
       switch(A) {
-        case 'Ingredients':
-          newPlaceHolder = 'ingrédient';
+        case 'Ingredients': // si on a ouvert le 1er dropdown ...
+          newPlaceHolder = 'ingrédient'; // alors la var = ingérdient
           break;
         case 'Appareil':
           newPlaceHolder = 'appareil';
@@ -35,8 +35,9 @@ function dropdown () {
         default:
           console.log(`Erreur dans le switch`);       
       }
-      if (input.placeholder.indexOf('Recherche') == -1) {
-      input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`);
+      if (input.placeholder.indexOf('Recherche') == -1) { // On boucle sur TOUS les inputs ; Celui qui a le mot Recherche ...
+        console.log(input.placeholder)
+      input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`); ///
       }
       header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg");
       header.classList.remove('dropdown-header--white')
