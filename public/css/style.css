@@ -48,7 +48,7 @@ body * {
     padding: 0;
 }
 
-/* INPUTS */
+/* DROPDOWNS */
 
 .button {
     border-radius: 0.3rem;
@@ -109,7 +109,6 @@ body * {
 .dropdown-arrow {
     margin-left: -36px;
     cursor: pointer;
-    /* zindex et position relative */
 }
 
 .dropdown-body {
