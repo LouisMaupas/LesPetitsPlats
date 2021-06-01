@@ -56,7 +56,7 @@
               newPlaceHolder = 'ustensile';
               break;
             default:
-              console.log(`Erreur dans le switch`);       
+              console.log(`Erreur dans le switch displayDropdowns()`);       
           }
         input.setAttribute('placeholder', `Rechercher un ${newPlaceHolder}`);
     }
