@@ -4,8 +4,7 @@ import {search} from "./search"
 dropdown()
 search(recipes)
 
-// TODO fonction recherche basique JS pour ressortir tous les éléments du fichiers JSON
-
-// TODO Affichage du badge de recherche 
+// TODO suivre ordre des TODO de search
 
 // TODO rendre rapprot de bug console.log lisible
+// => https://webpack.js.org/concepts/configuration/#introductory-configuration
