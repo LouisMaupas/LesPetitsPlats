@@ -2,14 +2,76 @@ function search (recipes) {
     const inputs = document.querySelectorAll('.inputs'),
     bodyIngre = document.getElementById('dropdown-body-Ingredients'),
     bodyApp = document.getElementById('dropdown-body-Appareil'),
-    bodyUst = document.getElementById('dropdown-body-Ustensiles'); 
+    bodyUst = document.getElementById('dropdown-body-Ustensiles'),
+    grid = document.getElementById('grid');
 
-
+    /**
+    * Document ready qui appelle la fonction d'écoute sur les inputs
+    */
+        document.addEventListener("DOMContentLoaded", function() {
+           displayRecipes(recipesToDisplay)
+       });
 
 
 
     // TODO 1 : Créer un tableau recipesToDisplay[] qui contiens toutes les recettes a afficher dans la grid (par défaut = toutes les recettes)
+    let recipesToDisplay = recipes
+
     // TODO 2 : créer une fonction displayRecipes() qui affiche dans la grid, toutes les recettes contenu dans le tableau recipesToDisplay[]
+    /**
+     * 
+     * @param {*} array 
+     */
+    function displayRecipes(array) {
+        let i
+        array.forEach(recipe => {
+            i = i + 1
+            console.log(typeof(i))
+            // TODO probleme pour générer les ingredients car quantité variable
+            // TYPEOF I NaN dans le DOM MAIS NUMBER DANS CONSOLE.LOG
+            grid.insertAdjacentHTML('afterbegin',`<div class="grid-item">
+                <div class="grid-img">
+                    <img class="img" src="public/img/img.png" />
+                </div>
+                <div class="grid-content container-fluid p-4">
+                    <div class="row mb-3">
+                        <div class="grid-title col-9">
+                            ${recipe.name}
+                        </div>
+                        <div class="grid-timer">
+                            <img src="public/logos/logo-clock.svg" />
+                            ${recipe.time} min
+                        </div>
+                    </div>
+                    <div class="row d-flex">
+                        <div id="ingredients-${i}" class="grid-ingredient col-5">
+                            <div class="ingredient">
+                                <span class="food">
+                                    Lait de coco:
+                                </span>
+                                <span class="quantity">
+                                    400ml
+                                </span>
+                            </div>
+                            <div class="ingredient">
+                                <span class="food">
+                                    Jus de citron:
+                                </span>
+                                <span class="quantity">
+                                    2
+                                </span>
+                            </div>
+                        </div>
+                        <div class="grid-recipe col-7">
+                        ${recipe.description}
+                        </div>
+                    </div>
+                </div>
+            </div>`)
+            // TODO PROBLEME POUR AFFICHER LES INGREDIENTS CAR PBLM POUR BOUCLER
+            // let ingredients = document.getElementById('ingredients-${i}')
+        })
+    }
 
     // TODO 3 : Fonction recherche (Barre de recherche)
     // si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
@@ -50,12 +112,7 @@ function search (recipes) {
 
 
 
-    /**
-     * Document ready qui appelle la fonction d'écoute sur les inputs
-     */
-    document.addEventListener("DOMContentLoaded", function() {
-        inputsKeypressListener()
-    });
+
 
 
     /**

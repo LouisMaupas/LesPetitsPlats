@@ -148,13 +148,15 @@ body * {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, 30%);
-    gap: 5%;
+    column-gap: 5%;
+    row-gap: 1%;
 }
 
 .grid-item {
     width: 100%;
     border: 1px solid black;
     margin: auto;
+    height: 364px;
 }
 
 .grid-img {
@@ -180,6 +182,9 @@ body * {
 }
 
 .grid-recipe {
-    overflow-y: hidden;
+    white-space: normal;
     text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 109px;
+    font-size: 12px;
 }
