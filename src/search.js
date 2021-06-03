@@ -3,6 +3,12 @@ function search (recipes) {
     bodyIngre = document.getElementById('dropdown-body-Ingredients'),
     bodyApp = document.getElementById('dropdown-body-Appareil'),
     bodyUst = document.getElementById('dropdown-body-Ustensiles'),
+    mainSearchInput = document.getElementById('main-search-bar'),
+    badgeIngre = document.getElementById('badges-ingredients'),
+    badgeApp = document.getElementById('badges-appareil'),
+    badgeUst = document.getElementById('badges-ustensiles'),
+    filterItem = document.querySelectorAll('.filter-item'),
+    ingreItem = document.querySelectorAll('.ingre-item'),
     grid = document.getElementById('grid');
 
     /**
@@ -24,9 +30,10 @@ function search (recipes) {
      */
     function displayRecipes(array) {
         let i
+        grid.innerHTML = ''
         array.forEach(recipe => {
             i = i + 1
-            console.log(typeof(i))
+          //  console.log(typeof(i))
             // TODO probleme pour générer les ingredients car quantité variable
             // TYPEOF I NaN dans le DOM MAIS NUMBER DANS CONSOLE.LOG
             grid.insertAdjacentHTML('afterbegin',`<div class="grid-item">
@@ -80,6 +87,18 @@ function search (recipes) {
     // OU un ustentile ayant des lettres en commun avec la saisie utilisateur input
     // OU un appareil ayant des lettres en commun avec la saisie utilisateur input
     // on appel la fonction displayRecipes()
+    mainSearchInput.addEventListener('keypress', () => {
+            if (mainSearchInput.value.length >= 2 ) {
+                recipesToDisplay.sort()
+                console.log(recipesToDisplay)
+                displayRecipes(recipesToDisplay)
+                // TODO JUSTE POUR TESTER LES BADGES A SUPPRIMER APRES
+                // NE S'AFFICHE PAS MAIS APPARAIT DNAS LE DOM DE LA CONSOLE
+                createIngreBadge(mainSearchInput.value)
+            }
+        })
+
+
 
    // TODO 4 : créer et séparer 3 filtres différents
 
@@ -93,9 +112,43 @@ function search (recipes) {
    //   - on appel displayRecipes()
    // On retire bodyIngre de l'affichage
 
+
+   let allIngredients = []
+
+     recipes.forEach(recipe => {
+            recipe.ingredients.forEach(recipe => {
+                    allIngredients.push(recipe.ingredient)
+            })
+        })
+
+    allIngredients.forEach(ingredient => {
+        bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
+        <a class="ingre-item">${ingredient}</a>
+        </div>`)
+    })
+
+    ingreItem.forEach(item => item.addEventListener('click', () => {
+        console.log('TEST')
+        createIngreBadge(item.value)
+    }))
+
+    function createIngreBadge(ingredient){
+        badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
+            <span class="badge__text">${ingredient}</span> 
+            <a>
+                <img src="public/logos/logo-cross.svg" class="ml-2" />
+            </a>    
+        </button>`)
+    }
+
+    // TODO 4-1-2) Gérer la fermeture des filtres 
+    // Retirer visuellement le bouton avec display none
+    // Retirer le filtre du bouton
+
    // TODO 4-2) filtre Appareil
    // TODO 4-3) filtre Ustensiles
    // TODO 4-4) voir si possible de factoriser un peu les 3 fonctions précédentes
+
 
 
 
@@ -120,6 +173,7 @@ function search (recipes) {
      * quand >= 3 lettres sont écrites dans l'input alors appel 
      * ()
      */
+    /*
      function inputsKeypressListener(){
         inputs.forEach(inputs => inputs.addEventListener('keypress', (e) => {
             if (e.target.value.length >= 3 ) {
@@ -154,7 +208,7 @@ function search (recipes) {
             default:
                 console.log('erreur dans le switch displayResearch()')   
         }
-    }
+    }*/
 
 }
 
