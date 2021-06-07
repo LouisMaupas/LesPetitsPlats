@@ -21,6 +21,10 @@ body * {
     width: 268px;
 }
 
+.display-none {
+    display: none;
+}
+
 /* SEARCH BAR */
 .search-input {
     height: 69px;

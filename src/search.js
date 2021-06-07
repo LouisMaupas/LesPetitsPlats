@@ -10,6 +10,8 @@ function search (recipes) {
     filterItem = document.querySelectorAll('.filter-item'),
     ingreItem = document.querySelectorAll('.ingre-item'),
     grid = document.getElementById('grid');
+    let filterClose = []
+     
 
     /**
     * Document ready qui appelle la fonction d'écoute sur les inputs
@@ -135,19 +137,34 @@ function search (recipes) {
     function createIngreBadge(ingredient){
         badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
             <span class="badge__text">${ingredient}</span> 
-            <a>
+            <a class="filter-close">
                 <img src="public/logos/logo-cross.svg" class="ml-2" />
             </a>    
         </button>`)
+        filterClose = document.querySelectorAll('.filter-close')
+        addEventListenerFilterClose()
     }
 
-    // TODO 4-1-2) Gérer la fermeture des filtres 
-    // Retirer visuellement le bouton avec display none
-    // Retirer le filtre du bouton
+
 
    // TODO 4-2) filtre Appareil
    // TODO 4-3) filtre Ustensiles
-   // TODO 4-4) voir si possible de factoriser un peu les 3 fonctions précédentes
+
+    // TODO 4-4) Gérer la fermeture des filtres 
+    // Retirer visuellement le bouton avec display none
+    // Retirer le filtre du bouton
+    function addEventListenerFilterClose() {
+        filterClose.forEach(item => item.addEventListener('click', (ev) => {
+        closefilter(ev)
+    }))
+    }
+
+    function closefilter(ev){
+        const target = ev.path[2]
+        target.classList.add('display-none')
+    }
+    
+   // TODO 4-5) voir si possible de factoriser un peu les 3 fonctions précédentes
 
 
 
