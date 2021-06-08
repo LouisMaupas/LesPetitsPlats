@@ -7,14 +7,12 @@ function search (recipes) {
     badgeIngre = document.getElementById('badges-ingredients'),
     badgeApp = document.getElementById('badges-appareil'),
     badgeUst = document.getElementById('badges-ustensiles'),
-    filterItem = document.querySelectorAll('.filter-item'),
-    ingreItem = document.querySelectorAll('.ingre-item'),
     grid = document.getElementById('grid');
     let filterClose = []
      
 
     /**
-    * Document ready qui appelle la fonction d'écoute sur les inputs
+    * Document ready qui affiche les recettes à l'ouverture de la page
     */
         document.addEventListener("DOMContentLoaded", function() {
            displayRecipes(recipesToDisplay)
@@ -92,10 +90,8 @@ function search (recipes) {
     mainSearchInput.addEventListener('keypress', () => {
             if (mainSearchInput.value.length >= 2 ) {
                 recipesToDisplay.sort()
-                console.log(recipesToDisplay)
                 displayRecipes(recipesToDisplay)
-                // TODO JUSTE POUR TESTER LES BADGES A SUPPRIMER APRES
-                // NE S'AFFICHE PAS MAIS APPARAIT DNAS LE DOM DE LA CONSOLE
+                // A SUPPRIMER :
                 createIngreBadge(mainSearchInput.value)
             }
         })
@@ -103,7 +99,6 @@ function search (recipes) {
 
 
    // TODO 4 : créer et séparer 3 filtres différents
-
    // TODO 4-1) filtre ingrédients
    // Faire un tableau allIngredients[] qui contient TOUS les ingredients de TOUTES les recette
    // Afficher le elements du tableau allIngredients[] dans bodyIngre sous forme de mots-clefs cliquables
@@ -114,26 +109,39 @@ function search (recipes) {
    //   - on appel displayRecipes()
    // On retire bodyIngre de l'affichage
 
-
+   /**
+    * Array des ingrédients
+    */
    let allIngredients = []
 
+    /**
+     * remplissage du tableau des ingrédients
+     */
      recipes.forEach(recipe => {
             recipe.ingredients.forEach(recipe => {
                     allIngredients.push(recipe.ingredient)
             })
         })
 
+    /**
+     * ajoute les ingrédients dans le body
+     */
     allIngredients.forEach(ingredient => {
         bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="ingre-item">${ingredient}</a>
         </div>`)
-    })
 
+    })
+    // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
+    let ingreItem = document.querySelectorAll('.ingre-item');
     ingreItem.forEach(item => item.addEventListener('click', () => {
-        console.log('TEST')
-        createIngreBadge(item.value)
+        createIngreBadge(item.innerHTML)
     }))
 
+    /**
+     * Créer les badges de filtre quand on choisi un ingredient
+     * @param {*} ingredient 
+     */
     function createIngreBadge(ingredient){
         badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
             <span class="badge__text">${ingredient}</span> 
@@ -145,9 +153,8 @@ function search (recipes) {
         addEventListenerFilterClose()
     }
 
-
-
    // TODO 4-2) filtre Appareil
+   
    // TODO 4-3) filtre Ustensiles
 
     // TODO 4-4) Gérer la fermeture des filtres 
