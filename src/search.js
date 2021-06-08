@@ -150,7 +150,7 @@ function search (recipes) {
             </a>    
         </button>`)
         filterClose = document.querySelectorAll('.filter-close')
-        addEventListenerFilterClose()
+        addEventListenerFilterClose(ingredient)
     }
 
    // TODO 4-2) filtre Appareil
@@ -160,9 +160,14 @@ function search (recipes) {
     // TODO 4-4) Gérer la fermeture des filtres 
     // Retirer visuellement le bouton avec display none
     // Retirer le filtre du bouton
-    function addEventListenerFilterClose() {
+    /**
+     * Retire visuellement le badge de filtre et remets   
+     * @param {*} filtre 
+     */
+    function addEventListenerFilterClose(ingredient) {
         filterClose.forEach(item => item.addEventListener('click', (ev) => {
         closefilter(ev)
+      //  SupprimeLeFiltre(ingredient)
     }))
     }
 
@@ -171,7 +176,7 @@ function search (recipes) {
         target.classList.add('display-none')
     }
     
-   // TODO 4-5) voir si possible de factoriser un peu les 3 fonctions précédentes
+   // TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
 
 
 
