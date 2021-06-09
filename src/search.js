@@ -121,6 +121,7 @@ function search (recipes) {
     /**
      * ajoute les ingrédients dans le body
      */
+    allIngredients.sort()
     allIngredients.forEach(ingredient => {
         bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="ingre-item">${ingredient}</a>
@@ -163,6 +164,7 @@ function search (recipes) {
     /**
      * ajoute les appareils dans le body
      */
+     allAppliances.sort()
      allAppliances.forEach(appliance => {
         bodyApp.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="app-item">${appliance}</a>
@@ -208,15 +210,13 @@ function search (recipes) {
     /**
      * ajoute les Ustensiles dans le body
      */
+    allUstensils.sort()
      allUstensils.forEach(ingredient => {
         bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="ingre-item">${ingredient}</a>
         </div>`)
 
     })
-    console.log(allUstensils)
-    allUstensils.sort()
-    console.log(allUstensils)
     // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
    // let ingreItem = document.querySelectorAll('.ingre-item');
     ingreItem.forEach(item => item.addEventListener('click', () => {
