@@ -51,23 +51,17 @@ function search (recipes) {
                         </div>
                     </div>
                     <div class="row d-flex">
-                        <div id="ingredients-${i}" class="grid-ingredient col-5">
-                            <div class="ingredient">
-                                <span class="food">
-                                    Lait de coco:
-                                </span>
-                                <span class="quantity">
-                                    400ml
-                                </span>
-                            </div>
-                            <div class="ingredient">
-                                <span class="food">
-                                    Jus de citron:
-                                </span>
-                                <span class="quantity">
-                                    2
-                                </span>
-                            </div>
+                        <div class="grid-ingredient col-5">
+                        ${recipe.ingredients.map(ingredient => {
+                            return `<div class="ingredient">
+                                        <span class="food">
+                                            ${ingredient.ingredient}:
+                                        </span>
+                                        <span class="quantity">
+                                        ${ingredient.quantity || '' } ${ingredient.unit || ''}
+                                        </span>
+                                    </div>`
+                        }).join('')}
                         </div>
                         <div class="grid-recipe col-7">
                         ${recipe.description}
@@ -91,8 +85,6 @@ function search (recipes) {
             if (mainSearchInput.value.length >= 2 ) {
                 recipesToDisplay.sort()
                 displayRecipes(recipesToDisplay)
-                // A SUPPRIMER :
-                createIngreBadge(mainSearchInput.value)
             }
         })
 
@@ -109,6 +101,7 @@ function search (recipes) {
    //   - on appel displayRecipes()
    // On retire bodyIngre de l'affichage
 
+   // TODO les ingrédients 
    /**
     * Array des ingrédients
     */
@@ -154,8 +147,91 @@ function search (recipes) {
     }
 
    // TODO 4-2) filtre Appareil
+   /**
+    * Array des appareils
+    */
+    let allAppliances = []
+
+    /**
+     * remplissage du tableau des appareils
+     */
+     recipes.forEach(recipe => {
+            allAppliances.push(recipe.appliance)
+        })
+    /**
+     * ajoute les appareils dans le body
+     */
+     allAppliances.forEach(appliance => {
+        bodyApp.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
+        <a class="app-item">${appliance}</a>
+        </div>`)
+
+    })
+    // ajouter evenemnt d'ecoute de click sur les appareils  dans le body
+    let appItem = document.querySelectorAll('.app-item');
+    appItem.forEach(item => item.addEventListener('click', () => {
+        createAppBadge(item.innerHTML)
+    }))
+
+    /**
+     * Créer les badges de filtre quand on choisi un ingredient
+     * @param {*} ingredient 
+     */
+    function createAppBadge(appliances){
+        badgeApp.insertAdjacentHTML('afterbegin',`<button type="button" class="btn button--green">
+            <span class="badge__text">${appliances}</span> 
+            <a class="filter-close">
+                <img src="public/logos/logo-cross.svg" class="ml-2" />
+            </a>    
+        </button>`)
+        filterClose = document.querySelectorAll('.filter-close')
+        addEventListenerFilterClose(appliances)
+    }
+
    
    // TODO 4-3) filtre Ustensiles
+    /**
+    * Array des ingrédients
+    */
+    let allUstensils = []
+
+    /**
+     * remplissage du tableau des ingrédients
+     */
+    recipes.forEach(recipe => {
+            recipe.ustensils.forEach(recipe => {
+                if (!allUstensils.includes(recipe)) allUstensils.push(recipe)               
+            })
+        })
+    /**
+     * ajoute les ingrédients dans le body
+     */
+    allIngredients.forEach(ingredient => {
+        bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
+        <a class="ingre-item">${ingredient}</a>
+        </div>`)
+
+    })
+    // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
+   // let ingreItem = document.querySelectorAll('.ingre-item');
+    ingreItem.forEach(item => item.addEventListener('click', () => {
+        createUstBadge(item.innerHTML)
+    }))
+
+ /**
+  * Créer les badges de filtre quand on choisi un ingredient
+  * @param {*} ingredient 
+  */
+ function createUstBadge(ingredient){
+     badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
+         <span class="badge__text">${ingredient}</span> 
+         <a class="filter-close">
+             <img src="public/logos/logo-cross.svg" class="ml-2" />
+         </a>    
+     </button>`)
+     filterClose = document.querySelectorAll('.filter-close')
+     addEventListenerFilterClose(ingredient)
+ }
 
     // TODO 4-4) Gérer la fermeture des filtres 
     // Retirer visuellement le bouton avec display none
