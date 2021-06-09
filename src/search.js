@@ -112,7 +112,9 @@ function search (recipes) {
      */
      recipes.forEach(recipe => {
             recipe.ingredients.forEach(recipe => {
+                if (!allIngredients.includes(recipe.ingredient)) {
                     allIngredients.push(recipe.ingredient)
+                } 
             })
         })
 
@@ -156,7 +158,7 @@ function search (recipes) {
      * remplissage du tableau des appareils
      */
      recipes.forEach(recipe => {
-            allAppliances.push(recipe.appliance)
+            if(!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance)
         })
     /**
      * ajoute les appareils dans le body
