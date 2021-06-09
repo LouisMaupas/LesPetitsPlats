@@ -193,12 +193,12 @@ function search (recipes) {
    
    // TODO 4-3) filtre Ustensiles
     /**
-    * Array des ingrédients
+    * Array des Ustensiles
     */
     let allUstensils = []
 
     /**
-     * remplissage du tableau des ingrédients
+     * remplissage du tableau des Ustensiles
      */
     recipes.forEach(recipe => {
             recipe.ustensils.forEach(recipe => {
@@ -206,14 +206,17 @@ function search (recipes) {
             })
         })
     /**
-     * ajoute les ingrédients dans le body
+     * ajoute les Ustensiles dans le body
      */
-    allIngredients.forEach(ingredient => {
-        bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
+     allUstensils.forEach(ingredient => {
+        bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="ingre-item">${ingredient}</a>
         </div>`)
 
     })
+    console.log(allUstensils)
+    allUstensils.sort()
+    console.log(allUstensils)
     // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
    // let ingreItem = document.querySelectorAll('.ingre-item');
     ingreItem.forEach(item => item.addEventListener('click', () => {
