@@ -126,7 +126,7 @@ body * {
     width: 100%;
 }
 
-.filter-grid{
+.filter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, 30%);
     column-gap: 5%;

@@ -38,10 +38,12 @@
         body = target.parentNode.parentNode.children[1];
         let placeholder = input.placeholder,
             newPlaceHolder;
+        let clickTarget = input.parentNode.parentNode.children[1];
         hideDropdonw()
         input.classList.add('input--open');
         setTimeout(() => {
           body.classList.add('is-open'); 
+        clickTarget.firstElementChild.classList.remove('d-none');
         }, 500);    
         header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg");
         header.classList.remove('dropdown-header--white')
@@ -67,7 +69,9 @@
      */
     function hideDropdonw() {
       inputs.forEach(input => {
-        input.parentNode.parentNode.children[1].classList.remove('is-open');
+        let clickTarget = input.parentNode.parentNode.children[1];
+        clickTarget.classList.remove('is-open');
+        clickTarget.firstElementChild.classList.add('d-none');
         input.classList.remove('input--open');
         input.parentNode.children[1].setAttribute("src", "./public/logos/logo-arrow-bot.svg");
         input.parentNode.classList.add('dropdown-header--white');
