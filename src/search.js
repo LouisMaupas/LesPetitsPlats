@@ -121,7 +121,6 @@ function search (recipes) {
         bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
         <a class="ingre-item">${ingredient}</a>
         </div>`)
-
     })
     // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
     let ingreItem = document.querySelectorAll('.ingre-item');
@@ -206,31 +205,31 @@ function search (recipes) {
      * ajoute les Ustensiles dans le body
      */
     allUstensils.sort()
-     allUstensils.forEach(ingredient => {
+     allUstensils.forEach(ustensil => {
         bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-        <a class="ingre-item">${ingredient}</a>
+        <a class="ust-item">${ustensil}</a>
         </div>`)
 
     })
-    // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
-   // let ingreItem = document.querySelectorAll('.ingre-item');
-    ingreItem.forEach(item => item.addEventListener('click', () => {
+    // ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
+    let ustItem = document.querySelectorAll('.ust-item');
+    ustItem.forEach(item => item.addEventListener('click', () => {
         createUstBadge(item.innerHTML)
     }))
 
  /**
-  * Créer les badges de filtre quand on choisi un ingredient
-  * @param {*} ingredient 
+  * Créer les badges de filtre quand on choisi un ustensils
+  * @param {*} ustensils 
   */
- function createUstBadge(ingredient){
-     badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
-         <span class="badge__text">${ingredient}</span> 
+ function createUstBadge(ustensils){
+     badgeUst.insertAdjacentHTML('afterbegin',`<button type="button" class="btn button--red">
+         <span class="badge__text">${ustensils}</span> 
          <a class="filter-close">
              <img src="public/logos/logo-cross.svg" class="ml-2" />
          </a>    
      </button>`)
      filterClose = document.querySelectorAll('.filter-close')
-     addEventListenerFilterClose(ingredient)
+     addEventListenerFilterClose(ustensils)
  }
 
     // TODO 4-4) Gérer la fermeture des filtres 
@@ -240,10 +239,10 @@ function search (recipes) {
      * Retire visuellement le badge de filtre et remets   
      * @param {*} filtre 
      */
-    function addEventListenerFilterClose(ingredient) {
+    function addEventListenerFilterClose(ustensils) {
         filterClose.forEach(item => item.addEventListener('click', (ev) => {
         closefilter(ev)
-      //  SupprimeLeFiltre(ingredient)
+      //  SupprimeLeFiltre(ustensils)
     }))
     }
 
@@ -256,65 +255,65 @@ function search (recipes) {
    // TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
 
 
+  // TODO : fonction recherche principal
+  /**
+   * La fonction de recherche pour la barre de recherche principal ET pour les recherches dans les filtres !
+   * @param {*} userInput string
+   * @param {*} array le tableau dans lequel itérer
+   */
+  let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils)
+  console.log(allKeywords)
+  function mainSearch (userInput, array = allKeywords) {
+    let tempArray = [];
+    let iterableArray = [];
 
+    switch (array) {
+        case 'main':
+            iterableArray = allKeywords
+            break;
+        case 'ing':
+            iterableArray = allIngredients
+            break;
+        case 'app':
+            iterableArray = allAppliances
+            break;
+        case 'ust':
+            iterableArray = allUstensils
+            break;
+        default:
+          console.log(`Erreur dans le switch de mainSearch`);
+      }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * ajoute une evenement d'écoute sur tous les dropdowns
-     * quand >= 3 lettres sont écrites dans l'input alors appel 
-     * ()
-     */
-    /*
-     function inputsKeypressListener(){
-        inputs.forEach(inputs => inputs.addEventListener('keypress', (e) => {
-            if (e.target.value.length >= 3 ) {
-                displayResearch(e.currentTarget.value, e.target)
-            }
-        }))
-    }
-
-    function displayResearch(value, target){
-        let result = []
-        recipes.forEach(recipe => {
-            let OneRecipe = recipe
-            let theRecipes = OneRecipe.ingredients
-            theRecipes.forEach(recipe => {
-                if(recipe.ingredient.includes(value)){
-                    result.push(recipe.ingredient)
-                }
-            })
-        })
-        console.log(result)
-
-        switch(target.id){
-            case 'Ingredients':
-                bodyIngre.innerHTML = result
-                break;
-            case 'Appareil':
-                bodyApp.innerHTML = result 
-                break;
-            case 'Ustensiles':
-                bodyUst.innerHTML = result
-                break;
-            default:
-                console.log('erreur dans le switch displayResearch()')   
+    // le tilde ~ incrémente et rend négatif un résultat. 
+    // indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
+    // avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false !
+    
+    iterableArray.forEach(element => {
+        if (~userInput.indexOf(element)) {
+            // false = pass
+        } else {
+            tempArray.push(element)
         }
-    }*/
+        console.log(tempArray)
+    })
+    
+  }
+  mainSearch('test', 'ing')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
