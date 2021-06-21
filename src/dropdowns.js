@@ -69,9 +69,10 @@
      */
     function hideDropdonw() {
       inputs.forEach(input => {
-        let clickTarget = input.parentNode.parentNode.children[1];
-        clickTarget.classList.remove('is-open');
+        let clickTarget = input.parentNode.parentNode.children[1]
+        clickTarget;
         clickTarget.firstElementChild.classList.add('d-none');
+        input.parentNode.parentNode.children[1].classList.remove('is-open');
         input.classList.remove('input--open');
         input.parentNode.children[1].setAttribute("src", "./public/logos/logo-arrow-bot.svg");
         input.parentNode.classList.add('dropdown-header--white');
@@ -86,7 +87,7 @@
      * @param {*} e 
      */
      window.onclick = function(e) {
-       if (!e.path[0].classList.contains('inputs')) {
+       if (!e.target.classList.contains('inputs')) {
         hideDropdonw()
       }
      }
