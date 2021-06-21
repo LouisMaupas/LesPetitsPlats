@@ -248,7 +248,6 @@ function search (recipes) {
 
     function closefilter(ev){
         const target = ev.target.parentElement.parentElement
-        console.log(target)
         target.classList.add('d-none')
     }
     
@@ -256,14 +255,15 @@ function search (recipes) {
 
 
   // TODO : fonction recherche principal
+  let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils)
   /**
    * La fonction de recherche pour la barre de recherche principal ET pour les recherches dans les filtres !
    * @param {*} userInput string
    * @param {*} array le tableau dans lequel itérer
    */
-  let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils)
-  console.log(allKeywords)
-  function mainSearch (userInput, array = allKeywords) {
+  function mainSearch (userInput, array = 'main') {
+    // TODO : mettre la recherche de l'user sous la forme de majuscule+minuscule : Exemple.
+    
     let tempArray = [];
     let iterableArray = [];
 
@@ -283,22 +283,24 @@ function search (recipes) {
         default:
           console.log(`Erreur dans le switch de mainSearch`);
       }
-
+      console.log(iterableArray)
     // le tilde ~ incrémente et rend négatif un résultat. 
     // indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
-    // avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false !
+    // avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false
     
     iterableArray.forEach(element => {
         if (~userInput.indexOf(element)) {
-            // false = pass
-        } else {
             tempArray.push(element)
+        } else {
+            // false = pass
         }
-        console.log(tempArray)
     })
-    
+    recipesToDisplay = tempArray
+    console.log(tempArray)
+
   }
-  mainSearch('test', 'ing')
+
+  mainSearch('Ananas')
 
 
 
