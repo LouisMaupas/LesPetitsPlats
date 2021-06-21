@@ -33,9 +33,6 @@ function search (recipes) {
         grid.innerHTML = ''
         array.forEach(recipe => {
             i = i + 1
-          //  console.log(typeof(i))
-            // TODO probleme pour générer les ingredients car quantité variable
-            // TYPEOF I NaN dans le DOM MAIS NUMBER DANS CONSOLE.LOG
             grid.insertAdjacentHTML('afterbegin',`<div class="grid-item">
                 <div class="grid-img">
                     <img class="img" src="public/img/img.png" />
@@ -69,8 +66,6 @@ function search (recipes) {
                     </div>
                 </div>
             </div>`)
-            // TODO PROBLEME POUR AFFICHER LES INGREDIENTS CAR PBLM POUR BOUCLER
-            // let ingredients = document.getElementById('ingredients-${i}')
         })
     }
 
@@ -253,8 +248,9 @@ function search (recipes) {
     }
 
     function closefilter(ev){
-        const target = ev.path[2]
-        target.classList.add('display-none')
+        const target = ev.target.parentElement.parentElement
+        console.log(target)
+        target.classList.add('d-none')
     }
     
    // TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
