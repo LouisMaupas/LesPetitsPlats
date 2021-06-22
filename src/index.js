@@ -4,8 +4,7 @@ import {search} from "./search"
 dropdown()
 search(recipes)
 
-// TODO BUGS :
-// les items de filtres apparaissent même sans body
+// TODO : Quand on fait une recherche dans un filtre : il s'affiche notre recherche + tous le tableau 
 
 // TODO : trouver comment remplacer le child[0] dans 
 //  bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >

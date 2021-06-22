@@ -8,7 +8,7 @@ function search (recipes) {
     badgeApp = document.getElementById('badges-appareil'),
     badgeUst = document.getElementById('badges-ustensiles'),
     grid = document.getElementById('grid');
-    let filterClose = []
+    let filterClose = [];
      
 
     /**
@@ -16,8 +16,26 @@ function search (recipes) {
     */
         document.addEventListener("DOMContentLoaded", function() {
            displayRecipes(recipesToDisplay)
+           bindInputsWithSearchFunction()
+           displayItems()
+           addListenerToKeyworldsFilter()
        });
 
+/**
+ * Lie input avec la fonction recherche
+ */
+//TODO a factoriser avec les 3 filtres
+function bindInputsWithSearchFunction() {
+    let InputIngredients = document.getElementById('Ingredients')
+    InputIngredients.addEventListener('keypress', () => {
+        if (InputIngredients.value.length > 2 ) {
+            console.log(InputIngredients.value)
+            // remplacer ing par valeur générique genre ID de l'input
+            filtersSearch(InputIngredients.value, 'ing')
+            displayItems()
+        }
+    })
+}
 
 
     // TODO 1 : Créer un tableau recipesToDisplay[] qui contiens toutes les recettes a afficher dans la grid (par défaut = toutes les recettes)
@@ -29,13 +47,8 @@ function search (recipes) {
      * @param {*} array 
      */
     function displayRecipes(array) {
-        let i
         grid.innerHTML = ''
         array.forEach(recipe => {
-            i = i + 1
-          //  console.log(typeof(i))
-            // TODO probleme pour générer les ingredients car quantité variable
-            // TYPEOF I NaN dans le DOM MAIS NUMBER DANS CONSOLE.LOG
             grid.insertAdjacentHTML('afterbegin',`<div class="grid-item">
                 <div class="grid-img">
                     <img class="img" src="public/img/img.png" />
@@ -69,8 +82,6 @@ function search (recipes) {
                     </div>
                 </div>
             </div>`)
-            // TODO PROBLEME POUR AFFICHER LES INGREDIENTS CAR PBLM POUR BOUCLER
-            // let ingredients = document.getElementById('ingredients-${i}')
         })
     }
 
@@ -121,18 +132,26 @@ function search (recipes) {
     /**
      * ajoute les ingrédients dans le body
      */
-    allIngredients.sort()
-    allIngredients.forEach(ingredient => {
-        bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-        <a class="ingre-item">${ingredient}</a>
-        </div>`)
+    // TODO factoriser avec les 3 filtres
+    function displayItems() {
+        bodyIngre.children[0].innerHTML = ''
+        allIngredients.sort()
+        allIngredients.forEach(ingredient => {
+            bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
+            <a class="ingre-item">${ingredient}</a>
+            </div>`)
+        })
+    }
 
-    })
-    // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
-    let ingreItem = document.querySelectorAll('.ingre-item');
-    ingreItem.forEach(item => item.addEventListener('click', () => {
-        createIngreBadge(item.innerHTML)
-    }))
+    /**
+     * ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
+     */
+    function addListenerToKeyworldsFilter() {
+        let ingreItem = document.querySelectorAll('.ingre-item');
+        ingreItem.forEach(item => item.addEventListener('click', () => {
+            createIngreBadge(item.innerHTML)
+        }))
+    }
 
     /**
      * Créer les badges de filtre quand on choisi un ingredient
@@ -211,31 +230,31 @@ function search (recipes) {
      * ajoute les Ustensiles dans le body
      */
     allUstensils.sort()
-     allUstensils.forEach(ingredient => {
+     allUstensils.forEach(ustensil => {
         bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-        <a class="ingre-item">${ingredient}</a>
+        <a class="ust-item">${ustensil}</a>
         </div>`)
 
     })
-    // ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
-   // let ingreItem = document.querySelectorAll('.ingre-item');
-    ingreItem.forEach(item => item.addEventListener('click', () => {
+    // ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
+    let ustItem = document.querySelectorAll('.ust-item');
+    ustItem.forEach(item => item.addEventListener('click', () => {
         createUstBadge(item.innerHTML)
     }))
 
  /**
-  * Créer les badges de filtre quand on choisi un ingredient
-  * @param {*} ingredient 
+  * Créer les badges de filtre quand on choisi un ustensils
+  * @param {*} ustensils 
   */
- function createUstBadge(ingredient){
-     badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
-         <span class="badge__text">${ingredient}</span> 
+ function createUstBadge(ustensils){
+     badgeUst.insertAdjacentHTML('afterbegin',`<button type="button" class="btn button--red">
+         <span class="badge__text">${ustensils}</span> 
          <a class="filter-close">
              <img src="public/logos/logo-cross.svg" class="ml-2" />
          </a>    
      </button>`)
      filterClose = document.querySelectorAll('.filter-close')
-     addEventListenerFilterClose(ingredient)
+     addEventListenerFilterClose(ustensils)
  }
 
     // TODO 4-4) Gérer la fermeture des filtres 
@@ -245,81 +264,78 @@ function search (recipes) {
      * Retire visuellement le badge de filtre et remets   
      * @param {*} filtre 
      */
-    function addEventListenerFilterClose(ingredient) {
+    function addEventListenerFilterClose(ustensils) {
         filterClose.forEach(item => item.addEventListener('click', (ev) => {
         closefilter(ev)
-      //  SupprimeLeFiltre(ingredient)
+      //  SupprimeLeFiltre(ustensils)
     }))
     }
 
     function closefilter(ev){
-        const target = ev.path[2]
-        target.classList.add('display-none')
+        const target = ev.target.parentElement.parentElement
+        target.classList.add('d-none')
     }
     
    // TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
 
 
+  // TODO : fonction recherche des filtres
+  // TODO penser à lier la fonction de recherche aux filtres : filterIngredients { mainSearch(input, ing) }
+  let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils)
+  /**
+   * La fonction de recherche pour les recherches dans les filtres !
+   * @param {*} userInput string
+   * @param {*} array le tableau dans lequel itérer
+   */
+  function filtersSearch (userInput, array = 'main') {
+    // TODO : mettre la recherche de l'user sous la forme de majuscule+minuscule : Exemple.
+    
+    let tempArray = [];
+    let iterableArray = [];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * ajoute une evenement d'écoute sur tous les dropdowns
-     * quand >= 3 lettres sont écrites dans l'input alors appel 
-     * ()
-     */
-    /*
-     function inputsKeypressListener(){
-        inputs.forEach(inputs => inputs.addEventListener('keypress', (e) => {
-            if (e.target.value.length >= 3 ) {
-                displayResearch(e.currentTarget.value, e.target)
-            }
-        }))
-    }
-
-    function displayResearch(value, target){
-        let result = []
-        recipes.forEach(recipe => {
-            let OneRecipe = recipe
-            let theRecipes = OneRecipe.ingredients
-            theRecipes.forEach(recipe => {
-                if(recipe.ingredient.includes(value)){
-                    result.push(recipe.ingredient)
-                }
-            })
-        })
-        console.log(result)
-
-        switch(target.id){
-            case 'Ingredients':
-                bodyIngre.innerHTML = result
-                break;
-            case 'Appareil':
-                bodyApp.innerHTML = result 
-                break;
-            case 'Ustensiles':
-                bodyUst.innerHTML = result
-                break;
-            default:
-                console.log('erreur dans le switch displayResearch()')   
-        }
-    }*/
-
+    switch (array) {
+        case 'main':
+            iterableArray = allKeywords
+            break;
+        case 'ing':
+            iterableArray = allIngredients
+            break;
+        case 'app':
+            iterableArray = allAppliances
+            break;
+        case 'ust':
+            iterableArray = allUstensils
+            break;
+        default:
+          console.log(`Erreur dans le 1er switch de filtersSearch`);
+      }
+    // le tilde ~ incrémente et rend négatif un résultat. 
+    // indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
+    // avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false
+    
+    iterableArray.forEach(element => {
+        if (~element.indexOf(userInput)) tempArray.push(element)        
+    })
+    switch (array) {
+        case 'main':
+            iterableArray = allKeywords
+            break;
+        case 'ing':
+            allIngredients = tempArray
+            break;
+        case 'app':
+            allAppliances = tempArray 
+            break;
+        case 'ust':
+            allUstensils = tempArray
+            break;
+        default:
+          console.log(`Erreur dans le 1er switch de filtersSearch`);
+      }
+      // TODO faire de même pour les 2 autres filtres / factoriser 
+      addListenerToKeyworldsFilter()
+  }
 }
+
 
 export {search}
