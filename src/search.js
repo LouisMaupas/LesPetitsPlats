@@ -27,7 +27,7 @@ function search (recipes) {
 //TODO a factoriser avec les 3 filtres
 function bindInputsWithSearchFunction() {
     let InputIngredients = document.getElementById('Ingredients')
-    InputIngredients.addEventListener('keypress', () => {
+    InputIngredients.addEventListener('keyup', () => {
         if (InputIngredients.value.length > 2 ) {
             console.log(InputIngredients.value)
             // remplacer ing par valeur générique genre ID de l'input
@@ -141,6 +141,8 @@ function bindInputsWithSearchFunction() {
             <a class="ingre-item">${ingredient}</a>
             </div>`)
         })
+        // TODO faire de même pour les 2 autres filtres / factoriser 
+      addListenerToKeyworldsFilter()
     }
 
     /**
@@ -149,6 +151,7 @@ function bindInputsWithSearchFunction() {
     function addListenerToKeyworldsFilter() {
         let ingreItem = document.querySelectorAll('.ingre-item');
         ingreItem.forEach(item => item.addEventListener('click', () => {
+            console.log('t')
             createIngreBadge(item.innerHTML)
         }))
     }
@@ -193,6 +196,7 @@ function bindInputsWithSearchFunction() {
     // ajouter evenemnt d'ecoute de click sur les appareils  dans le body
     let appItem = document.querySelectorAll('.app-item');
     appItem.forEach(item => item.addEventListener('click', () => {
+        console.log('a')
         createAppBadge(item.innerHTML)
     }))
 
@@ -239,6 +243,7 @@ function bindInputsWithSearchFunction() {
     // ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
     let ustItem = document.querySelectorAll('.ust-item');
     ustItem.forEach(item => item.addEventListener('click', () => {
+        console.log('b')
         createUstBadge(item.innerHTML)
     }))
 
@@ -266,6 +271,7 @@ function bindInputsWithSearchFunction() {
      */
     function addEventListenerFilterClose(ustensils) {
         filterClose.forEach(item => item.addEventListener('click', (ev) => {
+            console.log('d')
         closefilter(ev)
       //  SupprimeLeFiltre(ustensils)
     }))
@@ -330,10 +336,8 @@ function bindInputsWithSearchFunction() {
             allUstensils = tempArray
             break;
         default:
-          console.log(`Erreur dans le 1er switch de filtersSearch`);
+          console.log(`Erreur dans le 2eme switch de filtersSearch`);
       }
-      // TODO faire de même pour les 2 autres filtres / factoriser 
-      addListenerToKeyworldsFilter()
   }
 }
 
