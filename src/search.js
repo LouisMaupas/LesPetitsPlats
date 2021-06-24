@@ -12,7 +12,8 @@ function search(recipes) {
 		filterClose = [],
 		allIngredients = [],
 		allAppliances = [],
-		allUstensils = [];
+		allUstensils = [],
+		recipesfiltered = [];
 
 	/**
     * Document ready qui affiche les recettes à l'ouverture de la page
@@ -88,16 +89,15 @@ function search(recipes) {
 			);
 		});
 	}
-	
 
 	// TODO : Fonction recherche (Barre de recherche)
 	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
 	// On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
 	//  des mots ou groupes de lettres dans :
 	// - le titre
-	// - les ingrédients 
+	// - les ingrédients
 	// - les appareils.
-	// - La description ou pAS ???? 
+	// - La description ou pAS ????
 
 	/**
 	 * La fonction de recherche de la barre principale.
@@ -109,13 +109,12 @@ function search(recipes) {
 		}
 	});
 
-	// TODO : créer filtres 
+	// TODO : créer filtres
 	// Si l'utilisateur clique sur un mot clef alors :
-	//   - On affiche le mot clef dans un badge 
+	//   - On affiche le mot clef dans un badge
 	//   - On n'afficher QUE les RECETTES qui ont des INGREDIENTS ayant des lettres en communs avec la value de l'input du filtre ingrédient
 	//   - on RETIRE de recipesToDisplay[] toutes les RECETTES qui ne possède PAS l'INGREDIENT CHOISI EN MOT-CLE
 	//   - on appel displayRecipes()
-
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,30 +194,91 @@ function search(recipes) {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-     * ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
+     * ajouter evenemnt d'ecoute sur les ingredietns dans le body, au clic :
+	 * Appel la fonction pour créer un badge de filtre corespondant à l'ingredient cliqué
+	 * Filtre le tableaux recipesToDisplay() pour enlever les recettes qui n'ont pas l'ingredient 
      */
 	function addListenerToKeyworldsFilter() {
 		let ingreItem = document.querySelectorAll('.ingre-item');
 		ingreItem.forEach((item) =>
-			item.addEventListener('click', () => {
+			item.addEventListener('click', (e) => {
 				createIngreBadge(item.innerHTML);
+				filterArray(e.target.innerText, e.path[0]);
 			})
 		);
 	}
 
+	function filterArray(item, array) {
+		switch (array.classList.value) {
+			case 'ingre-item':
+				filterIng(item);
+				break;
+			case 'app-item':
+				filterApp(item);
+				break;
+			case 'ust-item':
+				filterUst(item);
+				break;
+			default:
+				console.log(`Erreur dans le switch de filterArray()`);
+		}
+
+		function filterIng(item) {
+			recipesToDisplay.forEach((recipe) => {
+				recipe.ingredients.forEach((ing) => {
+					if (item === ing.ingredient) {
+						recipesfiltered.push(recipe);
+						displayRecipes(recipesfiltered)
+					}
+				});
+			});
+		}
+
+		function filterApp(item) {
+			recipesToDisplay.forEach((recipe) => {
+				if (item === recipe.appliance) {
+					recipesfiltered.push(recipe);
+					displayRecipes(recipesfiltered)
+				}
+			});
+		}
+
+		function filterUst(item) {
+			recipesToDisplay.forEach((recipe) => {
+				recipe.ustensils.forEach(ust => {
+					if (item === ust) {
+						recipesfiltered.push(recipe);
+						displayRecipes(recipesfiltered)
+					}
+				})
+			});
+		}
+
+
+
+
+
+
+
+
+
+
+	}
 	//appareils
 	let appItem = document.querySelectorAll('.app-item');
 	appItem.forEach((item) =>
-		item.addEventListener('click', () => {
+		item.addEventListener('click', (e) => {
 			createAppBadge(item.innerHTML);
+			filterArray(e.target.innerText, e.path[0]);
 		})
 	);
 
 	// ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
 	let ustItem = document.querySelectorAll('.ust-item');
 	ustItem.forEach((item) =>
-		item.addEventListener('click', () => {
+		item.addEventListener('click', (e) => {
 			createUstBadge(item.innerHTML);
+			filterArray(e.target.innerText, e.path[0]);
 		})
 	);
 
