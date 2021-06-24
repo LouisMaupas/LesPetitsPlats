@@ -8,38 +8,41 @@ function search(recipes) {
 		badgeApp = document.getElementById('badges-appareil'),
 		badgeUst = document.getElementById('badges-ustensiles'),
 		grid = document.getElementById('grid');
-	let recipesToDisplay = recipes;
-
-	let filterClose = [];
+	let recipesToDisplay = recipes,
+		filterClose = [],
+		allIngredients = [],
+		allAppliances = [],
+		allUstensils = [];
 
 	/**
     * Document ready qui affiche les recettes à l'ouverture de la page
     */
 	document.addEventListener('DOMContentLoaded', function() {
+		fillIngArray();
 		displayRecipes(recipesToDisplay);
 		manageFilters();
 		displayItems();
-		addListenerToKeyworldsFilter();
 	});
 
 	/**
-     * Ajoute la fonction d'écoute sur les dropdown qui appel la recherche + l'affichage des résultats dans le dropdown de chaque dropdowns
+     * Ajoute la fonction d'écoute Keyup sur les dropdown : 
+	 * - Appel la fonction de recherche 
+	 * - Appel l'affichage des résultats dans le body de chaque dropdowns
      */
 	function manageFilters() {
 		inputs.forEach((input) => {
 			input.addEventListener('keyup', () => {
 				if (input.value.length > 2) {
-                    filtersSearch(input.value, input.id);
-                    displayItems();
+					filtersSearch(input.value, input.id);
+					displayItems();
 				}
-            });
+			});
 		});
 	}
 
-
-	// TODO 2 : créer une fonction displayRecipes() qui affiche dans la grid, toutes les recettes contenu dans le tableau recipesToDisplay[]
 	/**
-     * 
+     * Affiche dans la grid de l'affichage principal, 
+	 * toutes les recettes contenu dans le tableau passé en parametre de la fonction
      * @param {*} array 
      */
 	function displayRecipes(array) {
@@ -85,14 +88,20 @@ function search(recipes) {
 			);
 		});
 	}
+	
 
-	// TODO 3 : Fonction recherche (Barre de recherche)
+	// TODO : Fonction recherche (Barre de recherche)
 	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
 	// On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
-	//  OU Un ingrédient ayant des lettres en commun avec la saisie utilisateur input
-	// OU un ustentile ayant des lettres en commun avec la saisie utilisateur input
-	// OU un appareil ayant des lettres en commun avec la saisie utilisateur input
-	// on appel la fonction displayRecipes()
+	//  des mots ou groupes de lettres dans :
+	// - le titre
+	// - les ingrédients 
+	// - les appareils.
+	// - La description ou pAS ???? 
+
+	/**
+	 * La fonction de recherche de la barre principale.
+	 */
 	mainSearchInput.addEventListener('keypress', () => {
 		if (mainSearchInput.value.length >= 2) {
 			recipesToDisplay.sort();
@@ -100,41 +109,52 @@ function search(recipes) {
 		}
 	});
 
-	// TODO 4 : créer et séparer 3 filtres différents
-	// TODO 4-1) filtre ingrédients
-	// Faire un tableau allIngredients[] qui contient TOUS les ingredients de TOUTES les recette
-	// Afficher le elements du tableau allIngredients[] dans bodyIngre sous forme de mots-clefs cliquables
+	// TODO : créer filtres 
 	// Si l'utilisateur clique sur un mot clef alors :
-	//   - On affiche le mot clef dans un badge (donc on génère de toute pièce le badge en html =/= remplir)
+	//   - On affiche le mot clef dans un badge 
 	//   - On n'afficher QUE les RECETTES qui ont des INGREDIENTS ayant des lettres en communs avec la value de l'input du filtre ingrédient
 	//   - on RETIRE de recipesToDisplay[] toutes les RECETTES qui ne possède PAS l'INGREDIENT CHOISI EN MOT-CLE
 	//   - on appel displayRecipes()
-	// On retire bodyIngre de l'affichage
 
-	// TODO les ingrédients
-	/**
-    * Array des ingrédients
-    */
-	let allIngredients = [];
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
      * remplissage du tableau des ingrédients
      */
-	recipes.forEach((recipe) => {
-		recipe.ingredients.forEach((recipe) => {
-			if (!allIngredients.includes(recipe.ingredient)) {
-				allIngredients.push(recipe.ingredient);
-			}
+	function fillIngArray() {
+		recipes.forEach((recipe) => {
+			recipe.ingredients.forEach((recipe) => {
+				if (!allIngredients.includes(recipe.ingredient)) {
+					allIngredients.push(recipe.ingredient);
+				}
+			});
 		});
+	}
+
+	/**
+     * remplissage du tableau des appareils
+     */
+	recipes.forEach((recipe) => {
+		if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
 	});
 
 	/**
-     * Modifie le contenu du dropdown selon le contenu du talbeau passé en paramètre
+     * remplissage du tableau des Ustensiles
+     */
+	recipes.forEach((recipe) => {
+		recipe.ustensils.forEach((recipe) => {
+			if (!allUstensils.includes(recipe)) allUstensils.push(recipe);
+		});
+	});
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+     * Modifie le contenu du dropdown selon le contenu du tableau passé en paramètre
      * @param {*} dropdown 
      * @param {*} array 
      */
-	// TODO factoriser avec les 3 filtres
-
 	function displayItems(dropdown, array) {
 		bodyIngre.children[0].innerHTML = '';
 		allIngredients.sort();
@@ -150,6 +170,30 @@ function search(recipes) {
 		addListenerToKeyworldsFilter();
 	}
 
+	// APPAREIL
+	allAppliances.sort();
+	allAppliances.forEach((appliance) => {
+		bodyApp.children[0].insertAdjacentHTML(
+			'afterbegin',
+			`<div class="filter-item" >
+			 <a class="app-item">${appliance}</a>
+			 </div>`
+		);
+	});
+
+	// USTENSILS
+	allUstensils.sort();
+	allUstensils.forEach((ustensil) => {
+		bodyUst.children[0].insertAdjacentHTML(
+			'afterbegin',
+			`<div class="filter-item" >
+        <a class="ust-item">${ustensil}</a>
+        </div>`
+		);
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	/**
      * ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
      */
@@ -161,6 +205,24 @@ function search(recipes) {
 			})
 		);
 	}
+
+	//appareils
+	let appItem = document.querySelectorAll('.app-item');
+	appItem.forEach((item) =>
+		item.addEventListener('click', () => {
+			createAppBadge(item.innerHTML);
+		})
+	);
+
+	// ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
+	let ustItem = document.querySelectorAll('.ust-item');
+	ustItem.forEach((item) =>
+		item.addEventListener('click', () => {
+			createUstBadge(item.innerHTML);
+		})
+	);
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
      * Créer les badges de filtre quand on choisi un ingredient
@@ -180,41 +242,9 @@ function search(recipes) {
 		addEventListenerFilterClose(ingredient);
 	}
 
-	// TODO 4-2) filtre Appareil
 	/**
-    * Array des appareils
-    */
-	let allAppliances = [];
-
-	/**
-     * remplissage du tableau des appareils
-     */
-	recipes.forEach((recipe) => {
-		if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
-	});
-	/**
-     * ajoute les appareils dans le body
-     */
-	allAppliances.sort();
-	allAppliances.forEach((appliance) => {
-		bodyApp.children[0].insertAdjacentHTML(
-			'afterbegin',
-			`<div class="filter-item" >
-        <a class="app-item">${appliance}</a>
-        </div>`
-		);
-	});
-	// ajouter evenemnt d'ecoute de click sur les appareils  dans le body
-	let appItem = document.querySelectorAll('.app-item');
-	appItem.forEach((item) =>
-		item.addEventListener('click', () => {
-			createAppBadge(item.innerHTML);
-		})
-	);
-
-	/**
-     * Créer les badges de filtre quand on choisi un ingredient
-     * @param {*} ingredient 
+     * Créer les badges de filtre quand on choisi un appliances
+     * @param {*} appliances 
      */
 	function createAppBadge(appliances) {
 		badgeApp.insertAdjacentHTML(
@@ -229,40 +259,6 @@ function search(recipes) {
 		filterClose = document.querySelectorAll('.filter-close');
 		addEventListenerFilterClose(appliances);
 	}
-
-	// TODO 4-3) filtre Ustensiles
-	/**
-    * Array des Ustensiles
-    */
-	let allUstensils = [];
-
-	/**
-     * remplissage du tableau des Ustensiles
-     */
-	recipes.forEach((recipe) => {
-		recipe.ustensils.forEach((recipe) => {
-			if (!allUstensils.includes(recipe)) allUstensils.push(recipe);
-		});
-	});
-	/**
-     * ajoute les Ustensiles dans le body
-     */
-	allUstensils.sort();
-	allUstensils.forEach((ustensil) => {
-		bodyUst.children[0].insertAdjacentHTML(
-			'afterbegin',
-			`<div class="filter-item" >
-        <a class="ust-item">${ustensil}</a>
-        </div>`
-		);
-	});
-	// ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
-	let ustItem = document.querySelectorAll('.ust-item');
-	ustItem.forEach((item) =>
-		item.addEventListener('click', () => {
-			createUstBadge(item.innerHTML);
-		})
-	);
 
 	/**
   * Créer les badges de filtre quand on choisi un ustensils
@@ -282,18 +278,18 @@ function search(recipes) {
 		addEventListenerFilterClose(ustensils);
 	}
 
-	// TODO 4-4) Gérer la fermeture des filtres
-	// Retirer visuellement le bouton avec display none
-	// Retirer le filtre du bouton
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	/**
-     * Retire visuellement le badge de filtre et remets   
+     * Retire visuellement le badge de filtre 
+	 * + TODO : Reinitialiser le tableau du filtre avec tous les elements (ingredients ou appareil ou ustensiels)   
      * @param {*} filtre 
      */
 	function addEventListenerFilterClose(ustensils) {
 		filterClose.forEach((item) =>
 			item.addEventListener('click', (ev) => {
 				closefilter(ev);
-				//  SupprimeLeFiltre(ustensils)
+				//  réinitialiseLeTableauDe(ustensils)
 			})
 		);
 	}
@@ -303,21 +299,19 @@ function search(recipes) {
 		target.classList.add('d-none');
 	}
 
-	// TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// TODO : fonction recherche des filtres
-	// TODO penser à lier la fonction de recherche aux filtres : filterIngredients { mainSearch(input, ing) }
-	let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils);
 	/**
-   * Affiche les mots-clés qui correspondent à ce que l'utilisateur recherche dans le filtre
+     * Affiche les mots-clés qui correspondent à ce que l'utilisateur recherche dans le filtre
    * @param {*} userInput string
    * @param {*} array le tableau dans lequel itérer
    */
 	function filtersSearch(userInput, array = 'main') {
 		// TODO : mettre la recherche de l'user sous la forme de majuscule+minuscule : Exemple.
 
-		let tempArray = [];
-		let iterableArray = [];
+		let tempArray = [],
+			iterableArray = [],
+			allKeywords = allIngredients.concat(allAppliances).concat(allUstensils);
 
 		switch (array) {
 			case 'main':
