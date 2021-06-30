@@ -25,7 +25,6 @@ function search(recipes) {
 		manageInputs();
 		manageKeywords();
 	});
-
 	/**
 	 * Affiche à l'écran dans la grid de l'affichage principal, 
 	 * toutes les recettes contenu dans le tableau passé en parametre
@@ -147,13 +146,13 @@ function search(recipes) {
 		fillAppArray()
 		fillIngArray()
 		fillUstArray()
+
 	}
 
 
 	// /**
 	//  * Ajoute les keywords dans les filtres 
 	//  * @param {*} dropdown le dropdown qui va recevoir les mots-clés 
-	//  * @param {*} array INUTILE ? le tableau qui contiens les mots-clés à ajouter
 	//  */
 	function manageKeywords(dropdown = 'all') {
 		switch (dropdown) {
@@ -177,8 +176,8 @@ function search(recipes) {
 
 		// ingredients
 		function displayIng() {
-			bodyIngre.children[0].innerHTML = '';
 			allIngredients.sort();
+			bodyIngre.children[0].innerHTML = '';
 			allIngredients.forEach((ingredient) => {
 				bodyIngre.children[0].insertAdjacentHTML(
 					'afterbegin',
@@ -192,6 +191,7 @@ function search(recipes) {
 		// APPAREIL
 		function displayApp() {
 			allAppliances.sort();
+			bodyApp.children[0].innerHTML = ''
 			allAppliances.forEach((appliance) => {
 				bodyApp.children[0].insertAdjacentHTML(
 					'afterbegin',
@@ -205,6 +205,7 @@ function search(recipes) {
 		// USTENSILS
 		function displayUst() {
 			allUstensils.sort();
+			bodyUst.children[0].innerHTML = '';
 			allUstensils.forEach((ustensil) => {
 				bodyUst.children[0].insertAdjacentHTML(
 					'afterbegin',
