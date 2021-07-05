@@ -1,345 +1,414 @@
-function search (recipes) {
-    const inputs = document.querySelectorAll('.inputs'),
-    bodyIngre = document.getElementById('dropdown-body-Ingredients'),
-    bodyApp = document.getElementById('dropdown-body-Appareil'),
-    bodyUst = document.getElementById('dropdown-body-Ustensiles'),
-    mainSearchInput = document.getElementById('main-search-bar'),
-    badgeIngre = document.getElementById('badges-ingredients'),
-    badgeApp = document.getElementById('badges-appareil'),
-    badgeUst = document.getElementById('badges-ustensiles'),
-    grid = document.getElementById('grid');
-    let filterClose = [];
-     
+function search(recipes) {
+	const inputs = document.querySelectorAll('.inputs'),
+		bodyIngre = document.getElementById('dropdown-body-Ingredients'),
+		bodyApp = document.getElementById('dropdown-body-Appareil'),
+		bodyUst = document.getElementById('dropdown-body-Ustensiles'),
+		mainSearchInput = document.getElementById('main-search-bar'),
+		badgeIngre = document.getElementById('badges-ingredients'),
+		badgeApp = document.getElementById('badges-appareil'),
+		badgeUst = document.getElementById('badges-ustensiles'),
+		grid = document.getElementById('grid');
+	let recipesToDisplay = recipes,
+		filterClose = [],
+		allIngredients = [],
+		allAppliances = [],
+		allUstensils = [],
+		recipesfiltered = [];
 
-    /**
-    * Document ready qui affiche les recettes à l'ouverture de la page
-    */
-        document.addEventListener("DOMContentLoaded", function() {
-           displayRecipes(recipesToDisplay)
-           bindInputsWithSearchFunction()
-           displayItems()
-           addListenerToKeyworldsFilter()
-       });
+	/**
+	* Document ready
+	*/
+	document.addEventListener('DOMContentLoaded', function () {
+		fillFiltersArrays();
+		displayRecipes(recipesToDisplay);
+		mainSearch();
+		manageInputs();
+		manageKeywords();
+	});
+	/**
+	 * Affiche à l'écran dans la grid de l'affichage principal, 
+	 * toutes les recettes contenu dans le tableau passé en parametre
+	 * (Par défaut le fichier recipes.js)
+	 * @param {*} array 
+	 */
+	function displayRecipes(array = recipes) {
+		grid.innerHTML = '';
+		array.forEach((recipe) => {
+			grid.insertAdjacentHTML(
+				'afterbegin',
+				`<div class="grid-item">
+				<div class="grid-img">
+					<img class="img" src="public/img/img.png" />
+				</div>
+				<div class="grid-content container-fluid p-4">
+					<div class="row mb-3">
+						<div class="grid-title col-9">
+							${recipe.name}
+						</div>
+						<div class="grid-timer">
+							<img src="public/logos/logo-clock.svg" />
+							${recipe.time} min
+						</div>
+					</div>
+					<div class="row d-flex">
+						<div class="grid-ingredient col-5">
+						${recipe.ingredients
+					.map((ingredient) => {
+						return `<div class="ingredient">
+										<span class="food">
+											${ingredient.ingredient}:
+										</span>
+										<span class="quantity">
+										${ingredient.quantity || ''} ${ingredient.unit || ''}
+										</span>
+									</div>`;
+					})
+					.join('')}
+						</div>
+						<div class="grid-recipe col-7">
+						${recipe.description}
+						</div>
+					</div>
+				</div>
+			</div>`
+			);
+		});
+	}
 
-/**
- * Lie input avec la fonction recherche
- */
-//TODO a factoriser avec les 3 filtres
-function bindInputsWithSearchFunction() {
-    let InputIngredients = document.getElementById('Ingredients')
-    InputIngredients.addEventListener('keyup', () => {
-        if (InputIngredients.value.length > 2 ) {
-            console.log(InputIngredients.value)
-            // remplacer ing par valeur générique genre ID de l'input
-            filtersSearch(InputIngredients.value, 'ing')
-            displayItems()
-        }
-    })
-}
+	// TODO : Fonction recherche (Barre de recherche)
+	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
+	// On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
+	//  des mots ou groupes de lettres dans :
+	// - le titre
+	// - les ingrédients
+	// - les appareils.
+	// - La description ou pAS ????
+	/**
+	 * La fonction de recherche de la barre principale.
+	 */
+	function mainSearch () {
+		mainSearchInput.addEventListener('keypress', () => {
+			if (mainSearchInput.value.length >= 2) {
+				recipesToDisplay.sort();
+				displayRecipes(recipesToDisplay);
+			}
+		});
+	}
+
+	/**
+	 * Si l'user saisi dans un inputs appel filterSearch()
+	 */
+	function manageInputs() {
+		inputs.forEach((input) => {
+			input.addEventListener('keyup', () => {
+				if (input.value.length > 2) filtersSearch(input.value, input.id)
+				if (input.value.length <= 2) {
+					fillFiltersArrays()
+					manageKeywords()
+				}
+			});
+			input.addEventListener('click', () => {
+				input.value = ''
+			})
+		});
+	}
 
 
-    // TODO 1 : Créer un tableau recipesToDisplay[] qui contiens toutes les recettes a afficher dans la grid (par défaut = toutes les recettes)
-    let recipesToDisplay = recipes
+	/**
+	 * Rempli les tableaux sources des mots-clés avec tous les mots-clés par défaut contenu dans recipes.js
+	 */
+	function fillFiltersArrays() {
+		// Ingrédients
+		function fillIngArray() {
+			recipes.forEach((recipe) => {
+				recipe.ingredients.forEach((recipe) => {
+					if (!allIngredients.includes(recipe.ingredient)) {
+						allIngredients.push(recipe.ingredient);
+					}
+				});
+			});
+		}
+		// Appareils
+		function fillAppArray() {
+			recipes.forEach((recipe) => {
+				if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
+			});
+		}
 
-    // TODO 2 : créer une fonction displayRecipes() qui affiche dans la grid, toutes les recettes contenu dans le tableau recipesToDisplay[]
-    /**
-     * 
-     * @param {*} array 
-     */
-    function displayRecipes(array) {
-        grid.innerHTML = ''
-        array.forEach(recipe => {
-            grid.insertAdjacentHTML('afterbegin',`<div class="grid-item">
-                <div class="grid-img">
-                    <img class="img" src="public/img/img.png" />
-                </div>
-                <div class="grid-content container-fluid p-4">
-                    <div class="row mb-3">
-                        <div class="grid-title col-9">
-                            ${recipe.name}
-                        </div>
-                        <div class="grid-timer">
-                            <img src="public/logos/logo-clock.svg" />
-                            ${recipe.time} min
-                        </div>
-                    </div>
-                    <div class="row d-flex">
-                        <div class="grid-ingredient col-5">
-                        ${recipe.ingredients.map(ingredient => {
-                            return `<div class="ingredient">
-                                        <span class="food">
-                                            ${ingredient.ingredient}:
-                                        </span>
-                                        <span class="quantity">
-                                        ${ingredient.quantity || '' } ${ingredient.unit || ''}
-                                        </span>
-                                    </div>`
-                        }).join('')}
-                        </div>
-                        <div class="grid-recipe col-7">
-                        ${recipe.description}
-                        </div>
-                    </div>
-                </div>
-            </div>`)
-        })
-    }
+		// Ustensiles
+		function fillUstArray() {
+			recipes.forEach((recipe) => {
+				recipe.ustensils.forEach((recipe) => {
+					if (!allUstensils.includes(recipe)) allUstensils.push(recipe);
+				});
+			});
+		}
+		fillAppArray()
+		fillIngArray()
+		fillUstArray()
 
-    // TODO 3 : Fonction recherche (Barre de recherche)
-    // si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
-    // On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
-    //  OU Un ingrédient ayant des lettres en commun avec la saisie utilisateur input
-    // OU un ustentile ayant des lettres en commun avec la saisie utilisateur input
-    // OU un appareil ayant des lettres en commun avec la saisie utilisateur input
-    // on appel la fonction displayRecipes()
-    mainSearchInput.addEventListener('keypress', () => {
-            if (mainSearchInput.value.length >= 2 ) {
-                recipesToDisplay.sort()
-                displayRecipes(recipesToDisplay)
-            }
-        })
+	}
 
 
+	// /**
+	//  * Ajoute les keywords dans les filtres 
+	//  * @param {*} dropdown le dropdown qui va recevoir les mots-clés 
+	//  */
+	function manageKeywords(dropdown = 'all') {
+		switch (dropdown) {
+			case 'ing':
+				displayIng()
+				break;
+			case 'app':
+				displayApp()
+				break;
+			case 'Ust':
+				displayUst()
+				break;
+			case 'all':
+				displayIng()
+				displayApp()
+				displayUst()
+				break;
+			default:
+				console.log(`Erreur dans le switch de displayItems()`);
+		}
 
-   // TODO 4 : créer et séparer 3 filtres différents
-   // TODO 4-1) filtre ingrédients
-   // Faire un tableau allIngredients[] qui contient TOUS les ingredients de TOUTES les recette
-   // Afficher le elements du tableau allIngredients[] dans bodyIngre sous forme de mots-clefs cliquables
-   // Si l'utilisateur clique sur un mot clef alors :
-   //   - On affiche le mot clef dans un badge (donc on génère de toute pièce le badge en html =/= remplir)
-   //   - On n'afficher QUE les RECETTES qui ont des INGREDIENTS ayant des lettres en communs avec la value de l'input du filtre ingrédient
-   //   - on RETIRE de recipesToDisplay[] toutes les RECETTES qui ne possède PAS l'INGREDIENT CHOISI EN MOT-CLE
-   //   - on appel displayRecipes()
-   // On retire bodyIngre de l'affichage
+		// ingredients
+		function displayIng() {
+			allIngredients.sort();
+			bodyIngre.children[0].innerHTML = '';
+			allIngredients.forEach((ingredient) => {
+				bodyIngre.children[0].insertAdjacentHTML(
+					'afterbegin',
+					`<div class="filter-item" >
+                <a class="ingre-item">${ingredient}</a>
+                </div>`
+				);
+			});
+		}
 
-   // TODO les ingrédients 
-   /**
-    * Array des ingrédients
-    */
-   let allIngredients = []
+		// APPAREIL
+		function displayApp() {
+			allAppliances.sort();
+			bodyApp.children[0].innerHTML = ''
+			allAppliances.forEach((appliance) => {
+				bodyApp.children[0].insertAdjacentHTML(
+					'afterbegin',
+					`<div class="filter-item" >
+                     <a class="app-item">${appliance}</a>
+                     </div>`
+				);
+			});
+		}
 
-    /**
-     * remplissage du tableau des ingrédients
-     */
-     recipes.forEach(recipe => {
-            recipe.ingredients.forEach(recipe => {
-                if (!allIngredients.includes(recipe.ingredient)) {
-                    allIngredients.push(recipe.ingredient)
-                } 
-            })
-        })
+		// USTENSILS
+		function displayUst() {
+			allUstensils.sort();
+			bodyUst.children[0].innerHTML = '';
+			allUstensils.forEach((ustensil) => {
+				bodyUst.children[0].insertAdjacentHTML(
+					'afterbegin',
+					`<div class="filter-item" >
+                <a class="ust-item">${ustensil}</a>
+                </div>`
+				);
+			});
+		}
 
-    /**
-     * ajoute les ingrédients dans le body
-     */
-    // TODO factoriser avec les 3 filtres
-    function displayItems() {
-        bodyIngre.children[0].innerHTML = ''
-        allIngredients.sort()
-        allIngredients.forEach(ingredient => {
-            bodyIngre.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-            <a class="ingre-item">${ingredient}</a>
-            </div>`)
-        })
-        // TODO faire de même pour les 2 autres filtres / factoriser 
-      addListenerToKeyworldsFilter()
-    }
 
-    /**
-     * ajouter evenemnt d'ecoute de click sur les ingredietns dans le body
-     */
-    function addListenerToKeyworldsFilter() {
-        let ingreItem = document.querySelectorAll('.ingre-item');
-        ingreItem.forEach(item => item.addEventListener('click', () => {
-            console.log('t')
-            createIngreBadge(item.innerHTML)
-        }))
-    }
+		/**
+		 * ajouter evenemnt d'ecoute sur les mots-clefs qui :
+		 * - Appel la fonction : createIngreBadge()  pour créer un badge de filtre corespondant à l'ingredient cliqué
+		 * - Appel la fonction : filterArray() qui Filtre le tableaux recipesToDisplay() pour enlever les recettes qui n'ont pas l'ingredient 
+		 */
+		function addEventsOnKeywords() {
+			const ingreItem = document.querySelectorAll('.ingre-item'),
+			appItem = document.querySelectorAll('.app-item'),
+			ustItem = document.querySelectorAll('.ust-item'),
+			items = [ingreItem, appItem, ustItem];
+			items.forEach(index => {
+				index.forEach((item) =>
+					item.addEventListener('click', (e) => {
+						createBadge(item.innerHTML, item.classList[0])
+						filterArray(e.target.innerText, e.path[0]);
+					})
+				);
+			})
+		}
+		addEventsOnKeywords();
+	}
 
-    /**
-     * Créer les badges de filtre quand on choisi un ingredient
-     * @param {*} ingredient 
-     */
-    function createIngreBadge(ingredient){
-        badgeIngre.insertAdjacentHTML('afterbegin',`<button type="button" class="btn btn-primary">
-            <span class="badge__text">${ingredient}</span> 
+
+	/**
+	 * Modifie les le contenu des tableau de keywords selon la saisi de l'user passé en paramètre
+	 * @param {*} item 
+	 * @param {*} array 
+	 */
+	function filterArray(item, array) {
+		switch (array.classList.value) {
+			case 'ingre-item':
+				filterIng(item);
+				break;
+			case 'app-item':
+				filterApp(item);
+				break;
+			case 'ust-item':
+				filterUst(item);
+				break;
+			default:
+				console.log(`Erreur dans le switch de filterArray()`);
+		}
+		// Ingredients
+		function filterIng(item) {
+			recipesToDisplay.forEach((recipe) => {
+				recipe.ingredients.forEach((ing) => {
+					if (item === ing.ingredient) {
+						recipesfiltered.push(recipe);
+						displayRecipes(recipesfiltered)
+					}
+				});
+			});
+		}
+		// Appareils
+		function filterApp(item) {
+			recipesToDisplay.forEach((recipe) => {
+				if (item === recipe.appliance) {
+					recipesfiltered.push(recipe);
+					displayRecipes(recipesfiltered)
+				}
+			});
+		}
+		// Ust
+		function filterUst(item) {
+			recipesToDisplay.forEach((recipe) => {
+				recipe.ustensils.forEach(ust => {
+					if (item === ust) {
+						recipesfiltered.push(recipe);
+						displayRecipes(recipesfiltered)
+					}
+				})
+			});
+		}
+
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Créer les badges de filtre quand on choisi un ingredient
+	 * @param {*} ingredient 
+	 */
+
+	function createBadge(item, type) {
+		let btnColor, div
+		if (type === 'ingre-item') {
+			btnColor = 'btn-primary'
+			div = badgeIngre
+		} else if (type === 'app-item') {
+			btnColor = 'button--green'
+			div = badgeApp
+		} else if (type === 'ust-item') {
+			btnColor = 'button--red'
+			div = badgeUst
+		}
+		div.insertAdjacentHTML(
+			'afterbegin',
+			`<button type="button" class="btn ${btnColor}">
+            <span class="badge__text">${item}</span> 
             <a class="filter-close">
                 <img src="public/logos/logo-cross.svg" class="ml-2" />
             </a>    
-        </button>`)
-        filterClose = document.querySelectorAll('.filter-close')
-        addEventListenerFilterClose(ingredient)
-    }
+        </button>`
+		);
+		filterClose = document.querySelectorAll('.filter-close');
+		addEventListenerFilterClose(item);
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-   // TODO 4-2) filtre Appareil
-   /**
-    * Array des appareils
-    */
-    let allAppliances = []
+	/**
+	 * Retire visuellement le badge de filtre 
+	 * @param {*} filtre 
+	 */
+	function addEventListenerFilterClose() {
+		filterClose.forEach((item) =>
+			item.addEventListener('click', (ev) => {
+				closefilter(ev);
+			})
+		);
+	}
 
-    /**
-     * remplissage du tableau des appareils
-     */
-     recipes.forEach(recipe => {
-            if(!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance)
-        })
-    /**
-     * ajoute les appareils dans le body
-     */
-     allAppliances.sort()
-     allAppliances.forEach(appliance => {
-        bodyApp.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-        <a class="app-item">${appliance}</a>
-        </div>`)
+	/**
+	 * Supprime le badge
+	 * @param {*} ev 
+	 */
+	function closefilter(ev) {
+		const target = ev.target.parentElement.parentElement;
+		target.classList.add('d-none');
+		fillFiltersArrays();
+		displayRecipes()
+	}
 
-    })
-    // ajouter evenemnt d'ecoute de click sur les appareils  dans le body
-    let appItem = document.querySelectorAll('.app-item');
-    appItem.forEach(item => item.addEventListener('click', () => {
-        console.log('a')
-        createAppBadge(item.innerHTML)
-    }))
-
-    /**
-     * Créer les badges de filtre quand on choisi un ingredient
-     * @param {*} ingredient 
-     */
-    function createAppBadge(appliances){
-        badgeApp.insertAdjacentHTML('afterbegin',`<button type="button" class="btn button--green">
-            <span class="badge__text">${appliances}</span> 
-            <a class="filter-close">
-                <img src="public/logos/logo-cross.svg" class="ml-2" />
-            </a>    
-        </button>`)
-        filterClose = document.querySelectorAll('.filter-close')
-        addEventListenerFilterClose(appliances)
-    }
-
-   
-   // TODO 4-3) filtre Ustensiles
-    /**
-    * Array des Ustensiles
-    */
-    let allUstensils = []
-
-    /**
-     * remplissage du tableau des Ustensiles
-     */
-    recipes.forEach(recipe => {
-            recipe.ustensils.forEach(recipe => {
-                if (!allUstensils.includes(recipe)) allUstensils.push(recipe)               
-            })
-        })
-    /**
-     * ajoute les Ustensiles dans le body
-     */
-    allUstensils.sort()
-     allUstensils.forEach(ustensil => {
-        bodyUst.children[0].insertAdjacentHTML('afterbegin',`<div class="filter-item" >
-        <a class="ust-item">${ustensil}</a>
-        </div>`)
-
-    })
-    // ajouter evenemnt d'ecoute de click sur les ustentiles dans le body
-    let ustItem = document.querySelectorAll('.ust-item');
-    ustItem.forEach(item => item.addEventListener('click', () => {
-        console.log('b')
-        createUstBadge(item.innerHTML)
-    }))
-
- /**
-  * Créer les badges de filtre quand on choisi un ustensils
-  * @param {*} ustensils 
-  */
- function createUstBadge(ustensils){
-     badgeUst.insertAdjacentHTML('afterbegin',`<button type="button" class="btn button--red">
-         <span class="badge__text">${ustensils}</span> 
-         <a class="filter-close">
-             <img src="public/logos/logo-cross.svg" class="ml-2" />
-         </a>    
-     </button>`)
-     filterClose = document.querySelectorAll('.filter-close')
-     addEventListenerFilterClose(ustensils)
- }
-
-    // TODO 4-4) Gérer la fermeture des filtres 
-    // Retirer visuellement le bouton avec display none
-    // Retirer le filtre du bouton
-    /**
-     * Retire visuellement le badge de filtre et remets   
-     * @param {*} filtre 
-     */
-    function addEventListenerFilterClose(ustensils) {
-        filterClose.forEach(item => item.addEventListener('click', (ev) => {
-            console.log('d')
-        closefilter(ev)
-      //  SupprimeLeFiltre(ustensils)
-    }))
-    }
-
-    function closefilter(ev){
-        const target = ev.target.parentElement.parentElement
-        target.classList.add('d-none')
-    }
-    
-   // TODO 4-6) voir si possible de factoriser un peu les 3 fonctions précédentes
-
-
-  // TODO : fonction recherche des filtres
-  // TODO penser à lier la fonction de recherche aux filtres : filterIngredients { mainSearch(input, ing) }
-  let allKeywords = allIngredients.concat(allAppliances).concat(allUstensils)
-  /**
-   * La fonction de recherche pour les recherches dans les filtres !
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//// FILTER SEARCH ///////////
+	//////////////////////////////
+	/**
+	 * Affiche les mots-clés qui correspondent à ce que l'utilisateur recherche dans le filtre
    * @param {*} userInput string
    * @param {*} array le tableau dans lequel itérer
    */
-  function filtersSearch (userInput, array = 'main') {
-    // TODO : mettre la recherche de l'user sous la forme de majuscule+minuscule : Exemple.
-    
-    let tempArray = [];
-    let iterableArray = [];
+	function filtersSearch(userInput, array = 'main') {
+		// Rend la 1er lettre de la saisie utilisateur en majuscule et le reste en miniscule
+		let userInputLow = userInput.toLowerCase(),
+		input = userInputLow.charAt(0).toUpperCase() + 
+		userInputLow.slice(1);
 
-    switch (array) {
-        case 'main':
-            iterableArray = allKeywords
-            break;
-        case 'ing':
-            iterableArray = allIngredients
-            break;
-        case 'app':
-            iterableArray = allAppliances
-            break;
-        case 'ust':
-            iterableArray = allUstensils
-            break;
-        default:
-          console.log(`Erreur dans le 1er switch de filtersSearch`);
-      }
-    // le tilde ~ incrémente et rend négatif un résultat. 
-    // indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
-    // avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false
-    
-    iterableArray.forEach(element => {
-        if (~element.indexOf(userInput)) tempArray.push(element)        
-    })
-    switch (array) {
-        case 'main':
-            iterableArray = allKeywords
-            break;
-        case 'ing':
-            allIngredients = tempArray
-            break;
-        case 'app':
-            allAppliances = tempArray 
-            break;
-        case 'ust':
-            allUstensils = tempArray
-            break;
-        default:
-          console.log(`Erreur dans le 2eme switch de filtersSearch`);
-      }
-  }
+		let tempArray = [],
+			iterableArray = [],
+			allKeywords = allIngredients.concat(allAppliances).concat(allUstensils);
+
+		switch (array) {
+			case 'main':
+				iterableArray = allKeywords;
+				break;
+			case 'Ingredients':
+				iterableArray = allIngredients;
+				break;
+			case 'Appareil':
+				iterableArray = allAppliances;
+				break;
+			case 'Ustensiles':
+				iterableArray = allUstensils;
+				break;
+			default:
+				console.log(`Erreur dans le 1er switch de filtersSearch`);
+		}
+		// le tilde ~ incrémente et rend négatif un résultat.
+		// indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
+		// avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false
+
+		iterableArray.forEach((element) => {
+			if (~element.indexOf(input)) tempArray.push(element);
+		});
+		switch (array) {
+			case 'main':
+				iterableArray = allKeywords;
+				break;
+			case 'Ingredients':
+				allIngredients = tempArray;
+				break;
+			case 'Appareil':
+				allAppliances = tempArray;
+				break;
+			case 'Ustensiles':
+				allUstensils = tempArray;
+				break;
+			default:
+				console.log(`Erreur dans le 2eme switch de filtersSearch`);
+		}
+		manageKeywords();
+	}
 }
 
-
-export {search}
+export { search };
