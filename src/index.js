@@ -8,24 +8,9 @@ search(recipes)
 
 /*
 TODO : 
-Finir filtres :
-Quand l'user fais retiens le mot-clés tomate.
-- Boucle sur le tableau ingredients en comparant tous les mots-clés avec le mot tomate
-- Si le nombre de badge ingrédients =< 1
-    - si mots-clé = tomate alors push mots-clés dans tempArray
-    - sinon pass
-- Sinon
-    - on vide le tableau allIngredients
+Filtres : Filtrer sur un array
 
-* Factorisé :
-allIngredients = nombreBadges =<1 ? [] : allIngredients
-
-
-
-
-Algo 1
-Logigram
-*/
+*
 
 
 /* TODO

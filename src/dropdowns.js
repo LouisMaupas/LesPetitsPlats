@@ -47,7 +47,6 @@
         }, 500);    
         header.children[1].setAttribute("src", "./public/logos/logo-arrow-top.svg");
         header.classList.remove('dropdown-header--white')
-        console.log(placeholder)
         switch(placeholder) {
             case 'Ingredients':
               newPlaceHolder = 'ingrédient';

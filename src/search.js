@@ -13,7 +13,8 @@ function search(recipes) {
 		allIngredients = [],
 		allAppliances = [],
 		allUstensils = [],
-		recipesfiltered = [];
+		recipesfiltered = [],
+		badgesIng, badgesApp, badgesUst;
 
 	/**
 	* Document ready
@@ -21,7 +22,7 @@ function search(recipes) {
 	document.addEventListener('DOMContentLoaded', function () {
 		fillFiltersArrays();
 		displayRecipes(recipesToDisplay);
-		mainSearch();
+		addMainSearchEvent();
 		manageInputs();
 		manageKeywords();
 	});
@@ -77,22 +78,40 @@ function search(recipes) {
 
 	// TODO : Fonction recherche (Barre de recherche)
 	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
-	// On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
-	//  des mots ou groupes de lettres dans :
-	// - le titre
-	// - les ingrédients
-	// - les appareils.
-	// - La description ou pAS ????
-	/**
-	 * La fonction de recherche de la barre principale.
-	 */
-	function mainSearch () {
-		mainSearchInput.addEventListener('keypress', () => {
+	// on appel la fonction de recherche principale : addMainSearchEvent()
+	function addMainSearchEvent () {
+		mainSearchInput.addEventListener('keyup', () => {
 			if (mainSearchInput.value.length >= 2) {
-				recipesToDisplay.sort();
-				displayRecipes(recipesToDisplay);
+				mainSearch(mainSearchInput.value)
 			}
 		});
+	}
+	/**
+	 * On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
+	 * des mots ou groupes de lettres dans :
+	 * Le titre
+	 * Les ingrédients
+	 * Les appareils
+	 * Les ustensile
+	 * @param {*} request string user input
+	 */
+	function mainSearch(request) {
+		let goodRecipes = []
+		recipes.forEach(recipe => {
+			// titre
+			if (recipe.name.indexOf(request) >= 0 ) goodRecipes.push(recipe)
+			// ustensils
+			recipe.ustensils.forEach(ustensil => {
+				if(ustensil.indexOf(request) >= 0) goodRecipes.push(recipe)
+			})
+			// appareils
+			if (request.includes(recipe.appliance)) goodRecipes.push(recipe)
+			// ingredients
+			recipe.ingredients.forEach(ingredient => {
+				if (request.includes(ingredient.ingredient)) goodRecipes.push(recipe)
+			})
+		})
+		displayRecipes(goodRecipes)
 	}
 
 	/**
@@ -242,6 +261,7 @@ function search(recipes) {
 
 	/**
 	 * Modifie les le contenu des tableau de keywords selon la saisi de l'user passé en paramètre
+	 * Et le tableau des recettes à afficher
 	 * @param {*} item 
 	 * @param {*} array 
 	 */
@@ -261,14 +281,21 @@ function search(recipes) {
 		}
 		// Ingredients
 		function filterIng(item) {
-			recipesToDisplay.forEach((recipe) => {
-				recipe.ingredients.forEach((ing) => {
-					if (item === ing.ingredient) {
-						recipesfiltered.push(recipe);
-						displayRecipes(recipesfiltered)
-					}
+			let myIngredientsFiltered = []
+			 badgesIng = document.querySelectorAll('.badge-ing')
+			 badgesIng.forEach(item => {
+			 	myIngredientsFiltered.push(item.innerText)
+			 })
+			 console.log(myIngredientsFiltered)
+				recipesToDisplay.forEach((recipe) => {
+					recipe.ingredients.forEach(ing => {
+						if (ing.ingredient.includes(myIngredientsFiltered)) {
+						//	if (ing.ingredient === 'Lait de Coco') {
+							console.log(recipe.name)
+						}
+					})
 				});
-			});
+			fillFiltersArrays()
 		}
 		// Appareils
 		function filterApp(item) {
@@ -302,20 +329,24 @@ function search(recipes) {
 	 */
 
 	function createBadge(item, type) {
-		let btnColor, div
+		let btnColor, div, badgeType
 		if (type === 'ingre-item') {
 			btnColor = 'btn-primary'
 			div = badgeIngre
+			badgeType = 'badge-ing'
+			manageKeywords('ing')
 		} else if (type === 'app-item') {
 			btnColor = 'button--green'
+			badgeType = 'badge-app'
 			div = badgeApp
 		} else if (type === 'ust-item') {
 			btnColor = 'button--red'
 			div = badgeUst
+			badgeType = 'badge-app'
 		}
 		div.insertAdjacentHTML(
 			'afterbegin',
-			`<button type="button" class="btn ${btnColor}">
+			`<button type="button" class="btn ${btnColor} ${badgeType}">
             <span class="badge__text">${item}</span> 
             <a class="filter-close">
                 <img src="public/logos/logo-cross.svg" class="ml-2" />
@@ -367,7 +398,6 @@ function search(recipes) {
 		let tempArray = [],
 			iterableArray = [],
 			allKeywords = allIngredients.concat(allAppliances).concat(allUstensils);
-
 		switch (array) {
 			case 'main':
 				iterableArray = allKeywords;
