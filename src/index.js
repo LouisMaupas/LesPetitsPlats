@@ -19,7 +19,6 @@ Sur draw.io
 https://www.google.com/url?sa=i&url=https%3A%2F%2Flaurent-audibert.developpez.com%2FCours-UML%2F%3Fpage%3Ddiagramme-activites&psig=AOvVaw2RuUjRwaWac3D0yxYglle3&ust=1625138520019000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCKiD7fOev_ECFQAAAAAdAAAAABAD
 */
 
-// TODO Est-ce que les mots clés doivent pouvoir se cumuler ?
 // BUG cumule des mots-clés dans les body
 
 

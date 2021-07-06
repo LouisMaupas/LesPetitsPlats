@@ -76,7 +76,6 @@ function search(recipes) {
 		});
 	}
 
-	// TODO : Fonction recherche (Barre de recherche)
 	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
 	// on appel la fonction de recherche principale : addMainSearchEvent()
 	function addMainSearchEvent () {
@@ -86,8 +85,8 @@ function search(recipes) {
 			}
 		});
 	}
-	/**
-	 * On filtre et modifie le tableau recipesToDisplay[] pour RETIRER les recettes qui n'ont PAS
+	/** Fonction recherche de la barre principale
+	 * Appel displayRecipes() pour afficher les recettes qui n'ont
 	 * des mots ou groupes de lettres dans :
 	 * Le titre
 	 * Les ingrédients
@@ -105,10 +104,10 @@ function search(recipes) {
 				if(ustensil.indexOf(request) >= 0) goodRecipes.push(recipe)
 			})
 			// appareils
-			if (request.includes(recipe.appliance)) goodRecipes.push(recipe)
+			if (recipe.appliance.indexOf(request) >=0 ) goodRecipes.push(recipe)
 			// ingredients
 			recipe.ingredients.forEach(ingredient => {
-				if (request.includes(ingredient.ingredient)) goodRecipes.push(recipe)
+				if (ingredient.ingredient.indexOf(request) >=0 ) goodRecipes.push(recipe)
 			})
 		})
 		displayRecipes(goodRecipes)
