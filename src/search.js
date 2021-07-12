@@ -97,7 +97,7 @@ function search(recipes) {
 	function mainSearch(request) {
 		// on test ing puis app puis ust => pour être + rapide algo de division pour mainSearch
 		let goodRecipes = []
-		recipes.forEach(recipe => {
+		recipesToDisplay.forEach(recipe => {
 			// titre
 			if (recipe.name.indexOf(request) >= 0) goodRecipes.push(recipe)
 			// ustensils
@@ -111,6 +111,7 @@ function search(recipes) {
 				if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
 			})
 		})
+		recipesToDisplay = goodRecipes
 		displayRecipes(goodRecipes)
 	}
 
@@ -274,7 +275,7 @@ function search(recipes) {
 				myItemsFiltered.push({ name: badge.innerText, type: type })
 			})
 			// Search for each recipe if it is good (true) to be shown
-			let dataToShow = recipes.filter(recipe => {
+			let dataToShow = recipesToDisplay.filter(recipe => {
 				let toShow
 				// A recipe is true if one of its components matches an item in the 'myItemsFiltered' array
 				toShow = myItemsFiltered.reduce((acc, item) => {
@@ -301,10 +302,10 @@ function search(recipes) {
 						}
 						return acc
 					}
-
 				}, true)
 				return toShow
 			})
+			recipesToDisplay = dataToShow
 			displayRecipes(dataToShow)
 		}
 
