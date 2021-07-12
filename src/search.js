@@ -78,7 +78,7 @@ function search(recipes) {
 
 	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
 	// on appel la fonction de recherche principale : addMainSearchEvent()
-	function addMainSearchEvent () {
+	function addMainSearchEvent() {
 		mainSearchInput.addEventListener('keyup', () => {
 			if (mainSearchInput.value.length >= 2) {
 				mainSearch(mainSearchInput.value)
@@ -99,16 +99,16 @@ function search(recipes) {
 		let goodRecipes = []
 		recipes.forEach(recipe => {
 			// titre
-			if (recipe.name.indexOf(request) >= 0 ) goodRecipes.push(recipe)
+			if (recipe.name.indexOf(request) >= 0) goodRecipes.push(recipe)
 			// ustensils
 			recipe.ustensils.forEach(ustensil => {
-				if(ustensil.indexOf(request) >= 0) goodRecipes.push(recipe)
+				if (ustensil.indexOf(request) >= 0) goodRecipes.push(recipe)
 			})
 			// appareils
-			if (recipe.appliance.indexOf(request) >=0 ) goodRecipes.push(recipe)
+			if (recipe.appliance.indexOf(request) >= 0) goodRecipes.push(recipe)
 			// ingredients
 			recipe.ingredients.forEach(ingredient => {
-				if (ingredient.ingredient.indexOf(request) >=0 ) goodRecipes.push(recipe)
+				if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
 			})
 		})
 		displayRecipes(goodRecipes)
@@ -243,9 +243,9 @@ function search(recipes) {
 		 */
 		function addEventsOnKeywords() {
 			const ingreItem = document.querySelectorAll('.ingre-item'),
-			appItem = document.querySelectorAll('.app-item'),
-			ustItem = document.querySelectorAll('.ust-item'),
-			items = [ingreItem, appItem, ustItem];
+				appItem = document.querySelectorAll('.app-item'),
+				ustItem = document.querySelectorAll('.ust-item'),
+				items = [ingreItem, appItem, ustItem];
 			items.forEach(index => {
 				index.forEach((item) =>
 					item.addEventListener('click', (e) => {
@@ -274,7 +274,7 @@ function search(recipes) {
 		// 	case 'ust-item':
 		// 		filterUst(item);
 		// 		break;
-			
+
 		// 	default:
 		// 		console.log(`Erreur dans le switch de filterArray()`);
 		// }
@@ -282,38 +282,46 @@ function search(recipes) {
 		function filter() {
 			let myItemsFiltered = []
 			let badges = document.querySelectorAll('.badge-item')
-			 badges.forEach(badge => {
-				myItemsFiltered.push(badge.innerText)
-			 })
+			badges.forEach(badge => {
+				let type
+				if (badge.classList.contains('badge-ing')) type = 'ing'
+				if (badge.classList.contains('badge-app')) type = 'app'
+				if (badge.classList.contains('badge-ust')) type = 'ust'
+				myItemsFiltered.push({ name: badge.innerText, type: type })
+			})
 
 
-
-
-
-			 	let dataToShow = recipes.filter(recipe => {
-					let	toShow
-					toShow = myItemsFiltered.reduce((acc, item)=> {
-							// Une recherche pour les ingrédients
-							recipe.ingredients.forEach(ingredient => {
-								acc = (ingredient.ingredient.trim().toLowerCase()) == (item.trim().toLowerCase())
-								if (acc) return acc
-							})
-							if (!acc) {
-								// Une recherche pour les apps
-								acc = (recipe.appliance.trim().toLowerCase()) == (item.trim().toLowerCase())
-								if (acc) return acc
-								// Une recherche pour les ust
-								if (!acc) {
-									recipe.ustensils.forEach(ustensil => {
-									 	acc = (ustensil.trim().toLowerCase()) == (item.trim().toLowerCase())
-										if (acc) return acc
-									})
-								}
+			let dataToShow = recipes.filter(recipe => {
+				let toShow
+				toShow = myItemsFiltered.reduce((acc, item) => {
+					if (acc) {
+						// Une recherche pour les ingrédients
+						if (item.type === 'ing') {
+							for (const ingredient of recipe.ingredients) {
+								acc = (ingredient.ingredient.trim().toLowerCase()) == (item.name.trim().toLowerCase())
+							 	if (acc) return acc
 							}
+							if (acc) return acc
+						}
+						// Une recherche pour les apps
+						if (item.type === 'app') {
+								acc = (recipe.appliance.trim().toLowerCase()) == (item.name.trim().toLowerCase())
+								if (acc) return acc
+						}
+						// Une recherche pour les ust
+						if (item.type === 'ust') {
+							for (const ust of recipe.ustensils) {
+								acc = (ust.trim().toLowerCase()) == (item.name.trim().toLowerCase())
+								if (acc) return acc
+							}
+						}
 						return acc
-					}, true)
-					return toShow
-				 })
+					}
+
+				}, true)
+				return toShow
+			})
+			console.log(dataToShow)
 		}
 
 
@@ -368,7 +376,7 @@ function search(recipes) {
 		} else if (type === 'ust-item') {
 			btnColor = 'button--red'
 			div = badgeUst
-			badgeType = 'badge-app'
+			badgeType = 'badge-ust'
 		}
 		div.insertAdjacentHTML(
 			'afterbegin',
@@ -418,8 +426,8 @@ function search(recipes) {
 	function filtersSearch(userInput, array = 'main') {
 		// Rend la 1er lettre de la saisie utilisateur en majuscule et le reste en miniscule
 		let userInputLow = userInput.toLowerCase(),
-		input = userInputLow.charAt(0).toUpperCase() + 
-		userInputLow.slice(1);
+			input = userInputLow.charAt(0).toUpperCase() +
+				userInputLow.slice(1);
 
 		let tempArray = [],
 			iterableArray = [],
