@@ -95,6 +95,7 @@ function search(recipes) {
 	 * @param {*} request string user input
 	 */
 	function mainSearch(request) {
+		// on test ing puis app puis ust => pour être + rapide algo de division pour mainSearch
 		let goodRecipes = []
 		recipes.forEach(recipe => {
 			// titre
@@ -259,43 +260,69 @@ function search(recipes) {
 
 
 	/**
-	 * Modifie les le contenu des tableau de keywords selon la saisi de l'user passé en paramètre
+	 * Modifie le contenu des tableau de keywords selon la saisi de l'user passé en paramètre
 	 * Et le tableau des recettes à afficher
-	 * @param {*} item 
-	 * @param {*} array 
 	 */
-	function filterArray(item, array) {
-		switch (array.classList.value) {
-			case 'ingre-item':
-				filterIng(item);
-				break;
-			case 'app-item':
-				filterApp(item);
-				break;
-			case 'ust-item':
-				filterUst(item);
-				break;
-			default:
-				console.log(`Erreur dans le switch de filterArray()`);
-		}
-		// Ingredients
-		function filterIng(item) {
-			let myIngredientsFiltered = []
-			 badgesIng = document.querySelectorAll('.badge-ing')
-			 badgesIng.forEach(item => {
-			 	myIngredientsFiltered.push(item.innerText)
+	function filterArray() {
+		// switch (array.classList.value) {
+		// 	case 'ingre-item':
+		// 		filterIng(item);
+		// 		break;
+		// 	case 'app-item':
+		// 		filterApp(item);
+		// 		break;
+		// 	case 'ust-item':
+		// 		filterUst(item);
+		// 		break;
+			
+		// 	default:
+		// 		console.log(`Erreur dans le switch de filterArray()`);
+		// }
+		filter()
+		function filter() {
+			let myItemsFiltered = []
+			let badges = document.querySelectorAll('.badge-item')
+			 badges.forEach(badge => {
+				myItemsFiltered.push(badge.innerText)
 			 })
-			 console.log(myIngredientsFiltered)
-				recipesToDisplay.forEach((recipe) => {
-					recipe.ingredients.forEach(ing => {
-						if (ing.ingredient.includes(myIngredientsFiltered)) {
-						//	if (ing.ingredient === 'Lait de Coco') {
-							console.log(recipe.name)
-						}
-					})
-				});
-			fillFiltersArrays()
+
+
+
+
+
+			 	let dataToShow = recipes.filter(recipe => {
+					let	toShow
+					toShow = myItemsFiltered.reduce((acc, item)=> {
+							// Une recherche pour les ingrédients
+							recipe.ingredients.forEach(ingredient => {
+								acc = (ingredient.ingredient.trim().toLowerCase()) == (item.trim().toLowerCase())
+								if (acc) return acc
+							})
+							if (!acc) {
+								// Une recherche pour les apps
+								acc = (recipe.appliance.trim().toLowerCase()) == (item.trim().toLowerCase())
+								if (acc) return acc
+								// Une recherche pour les ust
+								if (!acc) {
+									recipe.ustensils.forEach(ustensil => {
+									 	acc = (ustensil.trim().toLowerCase()) == (item.trim().toLowerCase())
+										if (acc) return acc
+									})
+								}
+							}
+						return acc
+					}, true)
+					return toShow
+				 })
 		}
+
+
+
+
+
+
+
+
 		// Appareils
 		function filterApp(item) {
 			recipesToDisplay.forEach((recipe) => {
@@ -345,7 +372,7 @@ function search(recipes) {
 		}
 		div.insertAdjacentHTML(
 			'afterbegin',
-			`<button type="button" class="btn ${btnColor} ${badgeType}">
+			`<button type="button" class="btn badge-item ${btnColor} ${badgeType}">
             <span class="badge__text">${item}</span> 
             <a class="filter-close">
                 <img src="public/logos/logo-cross.svg" class="ml-2" />
