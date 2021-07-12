@@ -259,27 +259,11 @@ function search(recipes) {
 	}
 
 
-	/**
-	 * Modifie le contenu des tableau de keywords selon la saisi de l'user passé en paramètre
-	 * Et le tableau des recettes à afficher
-	 */
-	function filterArray() {
-		// switch (array.classList.value) {
-		// 	case 'ingre-item':
-		// 		filterIng(item);
-		// 		break;
-		// 	case 'app-item':
-		// 		filterApp(item);
-		// 		break;
-		// 	case 'ust-item':
-		// 		filterUst(item);
-		// 		break;
-
-		// 	default:
-		// 		console.log(`Erreur dans le switch de filterArray()`);
-		// }
-		filter()
-		function filter() {
+		/**
+		 * Displays in the grid, the recipes corresponding to the selected filters
+		 */
+		function filterArray() {
+			// Create an array containing all filters (keywords) as name / type objects
 			let myItemsFiltered = []
 			let badges = document.querySelectorAll('.badge-item')
 			badges.forEach(badge => {
@@ -289,13 +273,13 @@ function search(recipes) {
 				if (badge.classList.contains('badge-ust')) type = 'ust'
 				myItemsFiltered.push({ name: badge.innerText, type: type })
 			})
-
-
+			// Search for each recipe if it is good (true) to be shown
 			let dataToShow = recipes.filter(recipe => {
 				let toShow
+				// A recipe is true if one of its components matches an item in the 'myItemsFiltered' array
 				toShow = myItemsFiltered.reduce((acc, item) => {
 					if (acc) {
-						// Une recherche pour les ingrédients
+						// If the item is an ingredient we look for in the ingredients of the recipes ...
 						if (item.type === 'ing') {
 							for (const ingredient of recipe.ingredients) {
 								acc = (ingredient.ingredient.trim().toLowerCase()) == (item.name.trim().toLowerCase())
@@ -303,12 +287,12 @@ function search(recipes) {
 							}
 							if (acc) return acc
 						}
-						// Une recherche pour les apps
+						// If the item is an ingredient we look for in the ingredients of the appliances ...
 						if (item.type === 'app') {
 								acc = (recipe.appliance.trim().toLowerCase()) == (item.name.trim().toLowerCase())
 								if (acc) return acc
 						}
-						// Une recherche pour les ust
+						// If the item is an ingredient we look for in the ingredients of the ustensils ...
 						if (item.type === 'ust') {
 							for (const ust of recipe.ustensils) {
 								acc = (ust.trim().toLowerCase()) == (item.name.trim().toLowerCase())
@@ -321,38 +305,8 @@ function search(recipes) {
 				}, true)
 				return toShow
 			})
-			console.log(dataToShow)
+			displayRecipes(dataToShow)
 		}
-
-
-
-
-
-
-
-
-		// Appareils
-		function filterApp(item) {
-			recipesToDisplay.forEach((recipe) => {
-				if (item === recipe.appliance) {
-					recipesfiltered.push(recipe);
-					displayRecipes(recipesfiltered)
-				}
-			});
-		}
-		// Ust
-		function filterUst(item) {
-			recipesToDisplay.forEach((recipe) => {
-				recipe.ustensils.forEach(ust => {
-					if (item === ust) {
-						recipesfiltered.push(recipe);
-						displayRecipes(recipesfiltered)
-					}
-				})
-			});
-		}
-
-	}
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
