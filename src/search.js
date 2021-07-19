@@ -14,25 +14,27 @@ function search(recipes) {
 		allAppliances = [],
 		allUstensils = [],
 		recipesfiltered = [],
+		myItemsFiltered = [],
 		badgesIng, badgesApp, badgesUst;
 
 	/**
 	* Document ready
 	*/
 	document.addEventListener('DOMContentLoaded', function () {
-		fillFiltersArrays();
+		filterKeywords();
 		displayRecipes(recipesToDisplay);
 		addMainSearchEvent();
 		manageInputs();
 		manageKeywords();
 	});
+
+	
 	/**
 	 * Affiche à l'écran dans la grid de l'affichage principal, 
 	 * toutes les recettes contenu dans le tableau passé en parametre
-	 * (Par défaut le fichier recipes.js)
 	 * @param {*} array 
 	 */
-	function displayRecipes(array = recipes) {
+	function displayRecipes(array = recipesToDisplay) {
 		grid.innerHTML = '';
 		array.forEach((recipe) => {
 			grid.insertAdjacentHTML(
@@ -80,6 +82,7 @@ function search(recipes) {
 	// on appel la fonction de recherche principale : addMainSearchEvent()
 	function addMainSearchEvent() {
 		mainSearchInput.addEventListener('keyup', () => {
+			recipeNotFound()
 			if (mainSearchInput.value.length >= 2) {
 				mainSearch(mainSearchInput.value)
 			}
@@ -95,24 +98,38 @@ function search(recipes) {
 	 * @param {*} request string user input
 	 */
 	function mainSearch(request) {
+		filterRecipes()
+		// TODO c recipesToDisplay[] quon modifie
 		// on test ing puis app puis ust => pour être + rapide algo de division pour mainSearch
+		// ENFIN SURTOUT faudrait FILTRER
+		/*
+		1) fitlerRecipes() filtre affiche et modifie recipesToDisplay[]
+		2) ICI dans cette fonction on FILTRE SUR recipesToDisplay[] puis on displayRecipe(recipesToDisplay)
+		*/
 		let goodRecipes = []
 		recipesToDisplay.forEach(recipe => {
 			// titre
-			if (recipe.name.indexOf(request) >= 0) goodRecipes.push(recipe)
+			if (recipe.name.indexOf(request) >= 0) {
+				if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
+			} 
 			// ustensils
 			recipe.ustensils.forEach(ustensil => {
-				if (ustensil.indexOf(request) >= 0) goodRecipes.push(recipe)
+				if (ustensil.indexOf(request) >= 0){
+					if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
+				} 
 			})
 			// appareils
-			if (recipe.appliance.indexOf(request) >= 0) goodRecipes.push(recipe)
+			if (recipe.appliance.indexOf(request) >= 0){
+				if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
+			}
 			// ingredients
 			recipe.ingredients.forEach(ingredient => {
 				if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
 			})
 		})
 		recipesToDisplay = goodRecipes
-		displayRecipes(goodRecipes)
+		filterKeywords()
+		displayRecipes(recipesToDisplay)
 	}
 
 	/**
@@ -123,7 +140,7 @@ function search(recipes) {
 			input.addEventListener('keyup', () => {
 				if (input.value.length > 2) filtersSearch(input.value, input.id)
 				if (input.value.length <= 2) {
-					fillFiltersArrays()
+					filterKeywords()
 					manageKeywords()
 				}
 			});
@@ -135,29 +152,30 @@ function search(recipes) {
 
 
 	/**
-	 * Rempli les tableaux sources des mots-clés avec tous les mots-clés par défaut contenu dans recipes.js
+	 * Affiche dans les dropdowns de chaque filtre, leurs mots-clés disponibles 
 	 */
-	function fillFiltersArrays() {
+	function filterKeywords() {
 		// Ingrédients
 		function fillIngArray() {
-			recipes.forEach((recipe) => {
+			allIngredients = []
+			recipesToDisplay.forEach((recipe) => {
 				recipe.ingredients.forEach((recipe) => {
-					if (!allIngredients.includes(recipe.ingredient)) {
-						allIngredients.push(recipe.ingredient);
-					}
+					if (!allIngredients.includes(recipe.ingredient)) allIngredients.push(recipe.ingredient)
 				});
 			});
 		}
 		// Appareils
 		function fillAppArray() {
-			recipes.forEach((recipe) => {
-				if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
-			});
+			allAppliances = []
+			recipesToDisplay.forEach((recipe) => {
+		 		if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
+		 	})
 		}
 
 		// Ustensiles
 		function fillUstArray() {
-			recipes.forEach((recipe) => {
+			allUstensils = []
+			recipesToDisplay.forEach((recipe) => {
 				recipe.ustensils.forEach((recipe) => {
 					if (!allUstensils.includes(recipe)) allUstensils.push(recipe);
 				});
@@ -166,12 +184,12 @@ function search(recipes) {
 		fillAppArray()
 		fillIngArray()
 		fillUstArray()
-
+		manageKeywords()
 	}
 
 
 	// /**
-	//  * Ajoute les keywords dans les filtres 
+	//  * Créer le html des keywords et les ajoutes dans les dropdowns des filtres 
 	//  * @param {*} dropdown le dropdown qui va recevoir les mots-clés 
 	//  */
 	function manageKeywords(dropdown = 'all') {
@@ -238,11 +256,9 @@ function search(recipes) {
 
 
 		/**
-		 * ajouter evenemnt d'ecoute sur les mots-clefs qui :
-		 * - Appel la fonction : createIngreBadge()  pour créer un badge de filtre corespondant à l'ingredient cliqué
-		 * - Appel la fonction : filterArray() qui Filtre le tableaux recipesToDisplay() pour enlever les recettes qui n'ont pas l'ingredient 
+		 * ajouter l'evenement d'ecoute 'click' sur badges de mots-clefs :
 		 */
-		function addEventsOnKeywords() {
+		function addListenerOnKeywords() {
 			const ingreItem = document.querySelectorAll('.ingre-item'),
 				appItem = document.querySelectorAll('.app-item'),
 				ustItem = document.querySelectorAll('.ust-item'),
@@ -251,21 +267,21 @@ function search(recipes) {
 				index.forEach((item) =>
 					item.addEventListener('click', (e) => {
 						createBadge(item.innerHTML, item.classList[0])
-						filterArray(e.target.innerText, e.path[0]);
 					})
 				);
 			})
 		}
-		addEventsOnKeywords();
+		addListenerOnKeywords();
 	}
 
 
 		/**
-		 * Displays in the grid, the recipes corresponding to the selected filters
+		 * Filtre les recettes selon les filtres selectionnés + appel displayRecipes()
 		 */
-		function filterArray() {
+		function filterRecipes() {
 			// Create an array containing all filters (keywords) as name / type objects
-			let myItemsFiltered = []
+			myItemsFiltered = [];
+			recipesToDisplay = recipes;
 			let badges = document.querySelectorAll('.badge-item')
 			badges.forEach(badge => {
 				let type
@@ -275,10 +291,9 @@ function search(recipes) {
 				myItemsFiltered.push({ name: badge.innerText, type: type })
 			})
 			// Search for each recipe if it is good (true) to be shown
-			let dataToShow = recipesToDisplay.filter(recipe => {
-				let toShow
+			recipesToDisplay = recipesToDisplay.filter(recipe => {
 				// A recipe is true if one of its components matches an item in the 'myItemsFiltered' array
-				toShow = myItemsFiltered.reduce((acc, item) => {
+				return myItemsFiltered.reduce((acc, item) => {
 					if (acc) {
 						// If the item is an ingredient we look for in the ingredients of the recipes ...
 						if (item.type === 'ing') {
@@ -303,13 +318,9 @@ function search(recipes) {
 						return acc
 					}
 				}, true)
-				return toShow
 			})
-			recipesToDisplay = dataToShow
-			displayRecipes(dataToShow)
+			displayRecipes(recipesToDisplay)
 		}
-
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -323,7 +334,6 @@ function search(recipes) {
 			btnColor = 'btn-primary'
 			div = badgeIngre
 			badgeType = 'badge-ing'
-			manageKeywords('ing')
 		} else if (type === 'app-item') {
 			btnColor = 'button--green'
 			badgeType = 'badge-app'
@@ -344,6 +354,8 @@ function search(recipes) {
 		);
 		filterClose = document.querySelectorAll('.filter-close');
 		addEventListenerFilterClose(item);
+		filterRecipes()
+		filterKeywords()
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -355,19 +367,21 @@ function search(recipes) {
 		filterClose.forEach((item) =>
 			item.addEventListener('click', (ev) => {
 				closefilter(ev);
+				filterRecipes();
+				manageKeywords()
 			})
 		);
 	}
 
 	/**
-	 * Supprime le badge
+	 * Supprime (le html du) badge et ajuste la liste des mots-clés disponibles dans le dropdown du filtre
 	 * @param {*} ev 
 	 */
 	function closefilter(ev) {
 		const target = ev.target.parentElement.parentElement;
-		target.classList.add('d-none');
-		fillFiltersArrays();
-		displayRecipes()
+		target.remove();
+		displayRecipes();
+		filterKeywords();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -429,5 +443,10 @@ function search(recipes) {
 		manageKeywords();
 	}
 }
+
+function recipeNotFound() {
+	if (grid.hasChildNodes() == false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... ")
+}
+recipeNotFound()
 
 export { search };
