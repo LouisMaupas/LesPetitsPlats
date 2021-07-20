@@ -15,6 +15,11 @@ function search(recipes) {
 		allUstensils = [],
 		myItemsFiltered = [];
 
+		// TODO a SUPPRIME (HTML AUSSI)
+document.getElementById('display-recipes').addEventListener('click', function() {
+    console.log(recipesToDisplay)
+})
+
 	/**
 	* Document ready
 	*/
@@ -98,10 +103,15 @@ function search(recipes) {
 	// Si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
 	// Appel la fonction de recherche principale : addMainSearchEvent()
 	function addMainSearchEvent() {
-		mainSearchInput.addEventListener('keyup', () => {
+		mainSearchInput.addEventListener('keyup', function(e) {
 			recipeNotFound()
 			if (mainSearchInput.value.length >= 2) {
 				mainSearch(mainSearchInput.value)
+			}
+			if ((mainSearchInput.value.length <= 2) && (e.key === 'Backspace')) {
+				recipesToDisplay = recipes
+				filterRecipes()
+				displayRecipes(recipesToDisplay)
 			}
 		});
 	}
@@ -444,5 +454,8 @@ function search(recipes) {
 function recipeNotFound() {
 	if (grid.hasChildNodes() == false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... ")
 }
+
+
+
 
 export { search };

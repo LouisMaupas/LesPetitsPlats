@@ -5,14 +5,11 @@ dropdown()
 search(recipes)
 
 
-
 /*
 BUGS :
-- Les filtres mots-clés ne se réinitialise dans le dropdown que si on en utilise au moins 2/3 et qu'on les ferme tous :
-Exemple : Je clique sur "blender" puis je ferme le badge "blender"
-Dans le dropdown Appareil j'ai que le mots-clé Blender au lieu de tous les mots-clé.
 
-- Si je fais une recherche dans la barre principale puis que je supprime la recherche, les recettes affichés ne sont pas les bonnes (ont devrait toutes les avoir)
+- Si je fais une recherche dans la barre principale puis que je supprime la recherche, les recettes affichés ne sont pas les bonnes 
+(ont devrait toutes les avoir).
 
 - SI je fais une recherche dans la barre principale, que je la supprimer puis que je l'efface => recipesToDisplay pas revenu a 0 ?
 => Si je remets recipesToDisplay = recipes ALORS BUG car si j'ai un filtre en même temps ça le supprime
