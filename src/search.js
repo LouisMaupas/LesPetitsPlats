@@ -13,25 +13,23 @@ function search(recipes) {
 		allIngredients = [],
 		allAppliances = [],
 		allUstensils = [],
-		recipesfiltered = [],
-		myItemsFiltered = [],
-		badgesIng, badgesApp, badgesUst;
+		myItemsFiltered = [];
 
 	/**
 	* Document ready
 	*/
 	document.addEventListener('DOMContentLoaded', function () {
 		filterKeywords();
-		displayRecipes(recipesToDisplay);
+		displayRecipes();
 		addMainSearchEvent();
 		manageInputs();
 		manageKeywords();
+		recipeNotFound()
 	});
 
 	
 	/**
-	 * Affiche à l'écran dans la grid de l'affichage principal, 
-	 * toutes les recettes contenu dans le tableau passé en parametre
+	 * Display the recipes passed in parameter
 	 * @param {*} array 
 	 */
 	function displayRecipes(array = recipesToDisplay) {
@@ -77,9 +75,28 @@ function search(recipes) {
 			);
 		});
 	}
+	
 
-	// si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
-	// on appel la fonction de recherche principale : addMainSearchEvent()
+	/**
+	 * Si l'utilisateur écrit dans un inputs appel filterSearch()
+	 */
+		 function manageInputs() {
+			inputs.forEach((input) => {
+				input.addEventListener('keyup', () => {
+					if (input.value.length > 2) filtersSearch(input.value, input.id)
+					if (input.value.length <= 2) {
+						filterKeywords()
+						manageKeywords()
+					}
+				});
+				input.addEventListener('click', () => {
+					input.value = ''
+				})
+			});
+		}
+
+	// Si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
+	// Appel la fonction de recherche principale : addMainSearchEvent()
 	function addMainSearchEvent() {
 		mainSearchInput.addEventListener('keyup', () => {
 			recipeNotFound()
@@ -88,6 +105,7 @@ function search(recipes) {
 			}
 		});
 	}
+
 	/** Fonction recherche de la barre principale
 	 * Appel displayRecipes() pour afficher les recettes qui n'ont
 	 * des mots ou groupes de lettres dans :
@@ -129,36 +147,18 @@ function search(recipes) {
 		})
 		recipesToDisplay = goodRecipes
 		filterKeywords()
-		displayRecipes(recipesToDisplay)
+		displayRecipes()
 	}
 
 	/**
-	 * Si l'user saisi dans un inputs appel filterSearch()
+	 * Tri les tableaux sources de mots-clés de chaque filtre, pour ne garder que les mots-clés 
+	 * issus de l'objet recettes passés en paramètre 
 	 */
-	function manageInputs() {
-		inputs.forEach((input) => {
-			input.addEventListener('keyup', () => {
-				if (input.value.length > 2) filtersSearch(input.value, input.id)
-				if (input.value.length <= 2) {
-					filterKeywords()
-					manageKeywords()
-				}
-			});
-			input.addEventListener('click', () => {
-				input.value = ''
-			})
-		});
-	}
-
-
-	/**
-	 * Affiche dans les dropdowns de chaque filtre, leurs mots-clés disponibles 
-	 */
-	function filterKeywords() {
+	function filterKeywords(recipes = recipesToDisplay) {
 		// Ingrédients
 		function fillIngArray() {
 			allIngredients = []
-			recipesToDisplay.forEach((recipe) => {
+			recipes.forEach((recipe) => {
 				recipe.ingredients.forEach((recipe) => {
 					if (!allIngredients.includes(recipe.ingredient)) allIngredients.push(recipe.ingredient)
 				});
@@ -167,15 +167,14 @@ function search(recipes) {
 		// Appareils
 		function fillAppArray() {
 			allAppliances = []
-			recipesToDisplay.forEach((recipe) => {
+			recipes.forEach((recipe) => {
 		 		if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
 		 	})
 		}
-
 		// Ustensiles
 		function fillUstArray() {
 			allUstensils = []
-			recipesToDisplay.forEach((recipe) => {
+			recipes.forEach((recipe) => {
 				recipe.ustensils.forEach((recipe) => {
 					if (!allUstensils.includes(recipe)) allUstensils.push(recipe);
 				});
@@ -188,10 +187,10 @@ function search(recipes) {
 	}
 
 
-	// /**
-	//  * Créer le html des keywords et les ajoutes dans les dropdowns des filtres 
-	//  * @param {*} dropdown le dropdown qui va recevoir les mots-clés 
-	//  */
+	/**
+	* Créer le html des keywords des filtres et les ajoutes dans leurs dropdowns 
+	* @param {*} dropdown le dropdown qui va recevoir les mots-clés 
+	*/
 	function manageKeywords(dropdown = 'all') {
 		switch (dropdown) {
 			case 'ing':
@@ -319,15 +318,13 @@ function search(recipes) {
 					}
 				}, true)
 			})
-			displayRecipes(recipesToDisplay)
 		}
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Créer les badges de filtre quand on choisi un ingredient
-	 * @param {*} ingredient 
+	 * Génère le HTML des badges de filtre quand on choisi un ingredient
+	 * @param {*} item 
+	 * @param {*} type 
 	 */
-
 	function createBadge(item, type) {
 		let btnColor, div, badgeType
 		if (type === 'ingre-item') {
@@ -356,37 +353,34 @@ function search(recipes) {
 		addEventListenerFilterClose(item);
 		filterRecipes()
 		filterKeywords()
+		displayRecipes()
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Retire visuellement le badge de filtre 
-	 * @param {*} filtre 
+	 * Bind each filter close-buttons with close event
 	 */
 	function addEventListenerFilterClose() {
 		filterClose.forEach((item) =>
 			item.addEventListener('click', (ev) => {
 				closefilter(ev);
-				filterRecipes();
-				manageKeywords()
 			})
 		);
 	}
 
 	/**
-	 * Supprime (le html du) badge et ajuste la liste des mots-clés disponibles dans le dropdown du filtre
+	 * Supprime (le html du) badge et appel les fonctions pour ajuster la 
+	 * liste des mots-clés disponibles dans le dropdown du filtre et affichage des recettes
 	 * @param {*} ev 
 	 */
 	function closefilter(ev) {
 		const target = ev.target.parentElement.parentElement;
 		target.remove();
+		manageKeywords()
+		filterRecipes();
 		displayRecipes();
 		filterKeywords();
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//// FILTER SEARCH ///////////
-	//////////////////////////////
 	/**
 	 * Affiche les mots-clés qui correspondent à ce que l'utilisateur recherche dans le filtre
    * @param {*} userInput string
@@ -444,9 +438,11 @@ function search(recipes) {
 	}
 }
 
+/**
+ * If there are no recipes displayed on screen, then displays a message
+ */
 function recipeNotFound() {
 	if (grid.hasChildNodes() == false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... ")
 }
-recipeNotFound()
 
 export { search };
