@@ -8,12 +8,6 @@ search(recipes)
 /*
 BUGS :
 
-- Si je fais une recherche dans la barre principale puis que je supprime la recherche, les recettes affichés ne sont pas les bonnes 
-(ont devrait toutes les avoir).
-
-- SI je fais une recherche dans la barre principale, que je la supprimer puis que je l'efface => recipesToDisplay pas revenu a 0 ?
-=> Si je remets recipesToDisplay = recipes ALORS BUG car si j'ai un filtre en même temps ça le supprime
-
 - Si je fais une recherche dans la barre principale, puis que je filtre, des nouvelles recettes vont s'ajouter au lieu d'en enlever :
 Exemple je tape "Pizza" j'ai seulement la recette de pizza, si je filtre avec un "rouleau a patisserie" dans ustensiles 3 recettes apparaissent !
 
