@@ -85,7 +85,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 	/**
 	 * Si l'utilisateur écrit dans un inputs appel filterSearch()
 	 */
-		 function manageInputs() {
+	function manageInputs() {
 			inputs.forEach((input) => {
 				input.addEventListener('keyup', () => {
 					if (input.value.length > 2) filtersSearch(input.value, input.id)
@@ -107,6 +107,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 			recipeNotFound()
 			if (mainSearchInput.value.length >= 2) {
 				mainSearch(mainSearchInput.value)
+
 			}
 			if ((mainSearchInput.value.length <= 2) && (e.key === 'Backspace')) {
 				recipesToDisplay = recipes
@@ -178,8 +179,8 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 		function fillAppArray() {
 			allAppliances = []
 			recipes.forEach((recipe) => {
-		 		if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
-		 	})
+			if (!allAppliances.includes(recipe.appliance)) allAppliances.push(recipe.appliance);
+			})
 		}
 		// Ustensiles
 		function fillUstArray() {
@@ -274,7 +275,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 				items = [ingreItem, appItem, ustItem];
 			items.forEach(index => {
 				index.forEach((item) =>
-					item.addEventListener('click', (e) => {
+					item.addEventListener('click', () => {
 						createBadge(item.innerHTML, item.classList[0])
 					})
 				);
@@ -308,7 +309,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 						if (item.type === 'ing') {
 							for (const ingredient of recipe.ingredients) {
 								acc = (ingredient.ingredient.trim().toLowerCase()) == (item.name.trim().toLowerCase())
-							 	if (acc) return acc
+								if (acc) return acc
 							}
 							if (acc) return acc
 						}
@@ -363,7 +364,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 		addEventListenerFilterClose(item);
 		filterRecipes()
 		filterKeywords()
-		displayRecipes()
+		mainSearch(mainSearchInput.value)
 	}
 
 	/**
@@ -387,6 +388,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 		target.remove();
 		manageKeywords()
 		filterRecipes();
+		mainSearch(mainSearchInput.value)
 		displayRecipes();
 		filterKeywords();
 	}

@@ -6,12 +6,21 @@ search(recipes)
 
 
 /*
+REPRENDRE : A CHAQUE RECHERCHE OU FILTRAGE on appel la meme fonction qui va faire :
+- JE verifie ce que dis la recherche 
+- Je pose un filtre 
+(ou l'inverse)
+- Je retourne le resutlat
+
+
 BUGS :
 
 - Si je fais une recherche dans la barre principale, puis que je filtre, des nouvelles recettes vont s'ajouter au lieu d'en enlever :
 Exemple je tape "Pizza" j'ai seulement la recette de pizza, si je filtre avec un "rouleau a patisserie" dans ustensiles 3 recettes apparaissent !
 
 */
+
+// TODO 2nd algo faire avec une boucle ? 
 
 
 /* TODO
