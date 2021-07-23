@@ -15,11 +15,6 @@ function search(recipes) {
 		allUstensils = [],
 		myItemsFiltered = [];
 
-		// TODO a SUPPRIME (HTML AUSSI)
-document.getElementById('display-recipes').addEventListener('click', function() {
-    console.log(recipesToDisplay)
-})
-
 	/**
 	* Document ready
 	*/
@@ -48,11 +43,11 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 				</div>
 				<div class="grid-content container-fluid p-4">
 					<div class="row mb-3">
-						<div class="grid-title col-9">
+						<div class="grid-title col-sm">
 							${recipe.name}
 						</div>
-						<div class="grid-timer">
-							<img src="public/logos/logo-clock.svg" />
+						<div class="grid-timer col-sm d-flex justify-content-end my-auto">
+							<img src="public/logos/logo-clock.svg" class="mr-1" />
 							${recipe.time} min
 						</div>
 					</div>
@@ -71,7 +66,7 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 					})
 					.join('')}
 						</div>
-						<div class="grid-recipe col-7">
+						<div class="grid-recipe cut-text col-7">
 						${recipe.description}
 						</div>
 					</div>
@@ -128,13 +123,6 @@ document.getElementById('display-recipes').addEventListener('click', function() 
 	 */
 	function mainSearch(request) {
 		filterRecipes()
-		// TODO c recipesToDisplay[] quon modifie
-		// on test ing puis app puis ust => pour être + rapide algo de division pour mainSearch
-		// ENFIN SURTOUT faudrait FILTRER
-		/*
-		1) fitlerRecipes() filtre affiche et modifie recipesToDisplay[]
-		2) ICI dans cette fonction on FILTRE SUR recipesToDisplay[] puis on displayRecipe(recipesToDisplay)
-		*/
 		let goodRecipes = []
 		recipesToDisplay.forEach(recipe => {
 			// titre
