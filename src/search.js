@@ -37,7 +37,7 @@ function search(recipes) {
 		array.forEach((recipe) => {
 			grid.insertAdjacentHTML(
 				'afterbegin',
-				`<div class="grid-item">
+				`<div class="grid-item cut-text">
 				<div class="grid-img">
 					<img class="img" src="public/img/img.png" />
 				</div>
@@ -52,7 +52,7 @@ function search(recipes) {
 						</div>
 					</div>
 					<div class="row d-flex">
-						<div class="grid-ingredient col-5">
+						<div class="grid-ingredient cut-text col-5">
 						${recipe.ingredients
 					.map((ingredient) => {
 						return `<div class="ingredient">
