@@ -78,7 +78,7 @@ function search(recipes) {
 	
 
 	/**
-	 * Si l'utilisateur écrit dans un inputs appel filterSearch()
+	 * If user writes in a input, call filterSearch()
 	 */
 	function manageInputs() {
 			inputs.forEach((input) => {
@@ -95,8 +95,9 @@ function search(recipes) {
 			});
 		}
 
-	// Si l'utilisateur écrit au moins 3 caractères dans la barre de recherche principale
-	// Appel la fonction de recherche principale : addMainSearchEvent()
+	/**
+	 * If user writes at least 3 characters in the main search bar, call recipesToDisplay()
+	 */
 	function addMainSearchEvent() {
 		mainSearchInput.addEventListener('keyup', function(e) {
 			recipeNotFound()
@@ -112,13 +113,8 @@ function search(recipes) {
 		});
 	}
 
-	/** Fonction recherche de la barre principale
-	 * Appel displayRecipes() pour afficher les recettes qui n'ont
-	 * des mots ou groupes de lettres dans :
-	 * Le titre
-	 * Les ingrédients
-	 * Les appareils
-	 * Les ustensile
+	/** Main bar search function
+	 * Call displayRecipes() to display recipes which contain the input in title, ingredients, appliances and ustensils.
 	 * @param {*} request string user input
 	 */
 	function mainSearch(request) {
@@ -150,8 +146,7 @@ function search(recipes) {
 	}
 
 	/**
-	 * Tri les tableaux sources de mots-clés de chaque filtre, pour ne garder que les mots-clés 
-	 * issus de l'objet recettes passés en paramètre 
+	 * Sort the source-tables of keywords, to keep only the keywords of the recipes passed in parameter 
 	 */
 	function filterKeywords(recipes = recipesToDisplay) {
 		// Ingrédients
@@ -187,8 +182,8 @@ function search(recipes) {
 
 
 	/**
-	* Créer le html des keywords des filtres et les ajoutes dans leurs dropdowns 
-	* @param {*} dropdown le dropdown qui va recevoir les mots-clés 
+	* Create HTML of keywords in dropdowns 
+	* @param {*} dropdown that receives the keywords 
 	*/
 	function manageKeywords(dropdown = 'all') {
 		switch (dropdown) {
@@ -254,7 +249,7 @@ function search(recipes) {
 
 
 		/**
-		 * ajouter l'evenement d'ecoute 'click' sur badges de mots-clefs :
+		 * Add event listenner on click for the keywords
 		 */
 		function addListenerOnKeywords() {
 			const ingreItem = document.querySelectorAll('.ingre-item'),
@@ -274,7 +269,7 @@ function search(recipes) {
 
 
 		/**
-		 * Filtre les recettes selon les filtres selectionnés + appel displayRecipes()
+		 * Filter recipes according to the selecte filters + call displayRecipes()
 		 */
 		function filterRecipes() {
 			// Create an array containing all filters (keywords) as name / type objects
@@ -320,7 +315,7 @@ function search(recipes) {
 		}
 
 	/**
-	 * Génère le HTML des badges de filtre quand on choisi un ingredient
+	 * Generate HTML of the badges/filters when you choose an ing, ust or app
 	 * @param {*} item 
 	 * @param {*} type 
 	 */
@@ -367,8 +362,8 @@ function search(recipes) {
 	}
 
 	/**
-	 * Supprime (le html du) badge et appel les fonctions pour ajuster la 
-	 * liste des mots-clés disponibles dans le dropdown du filtre et affichage des recettes
+	 * Delete (the html of) badge and call the functions to adjust the  
+	 * list of keywords available in the dropdown's filter and display recipes
 	 * @param {*} ev 
 	 */
 	function closefilter(ev) {
@@ -382,12 +377,12 @@ function search(recipes) {
 	}
 
 	/**
-	 * Affiche les mots-clés qui correspondent à ce que l'utilisateur recherche dans le filtre
+	* Modify the keywords contains in dropdowns according to the research carried out 
    * @param {*} userInput string
-   * @param {*} array le tableau dans lequel itérer
+   * @param {*} array in wich we iterate
    */
 	function filtersSearch(userInput, array = 'main') {
-		// Rend la 1er lettre de la saisie utilisateur en majuscule et le reste en miniscule
+		// Make the 1st letter of user inout uppercase and the rest lowercase
 		let userInputLow = userInput.toLowerCase(),
 			input = userInputLow.charAt(0).toUpperCase() +
 				userInputLow.slice(1);
@@ -411,9 +406,9 @@ function search(recipes) {
 			default:
 				console.log(`Erreur dans le 1er switch de filtersSearch`);
 		}
-		// le tilde ~ incrémente et rend négatif un résultat.
-		// indexOf retourne la position en chiffre (ex 3) dans la phrase de la valeur cherché et si la valeur cherché n’est pas présente il retourne -1.
-		// avec le tilde si indexOf ne trouve pas la valeur il va retourner 0 donc notre condition if sera false
+		// ~ increments and multiply by -1.
+		// indexOf return the sought position by a number (ex 3). If the value is not found return -1.
+		// Thanks to the tilde indexOf return 0 instead of -1 so the if condition will be false
 
 		iterableArray.forEach((element) => {
 			if (~element.indexOf(input)) tempArray.push(element);
@@ -439,13 +434,15 @@ function search(recipes) {
 }
 
 /**
- * If there are no recipes displayed on screen, then displays a message
+ * Display a warning to the user that the search was unsucessful
  */
 function recipeNotFound() {
-	if (grid.hasChildNodes() == false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... ")
+	/* const text = document.createElement('div')
+	text.classList.add('recipe-not-found')
+	text.innerText = "Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... "
+	document.body.append(text)*/
+	if (grid.hasChildNodes() === false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ...")
 }
-
-
 
 
 export { search };
