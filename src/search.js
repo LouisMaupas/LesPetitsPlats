@@ -27,6 +27,12 @@ function search(recipes) {
 		recipeNotFound()
 	});
 
+
+	// A SUPPRIMER
+	document.getElementById('del').addEventListener('click', () => {
+		console.log(recipesToDisplay)
+	})
+
 	
 	/**
 	 * Display the recipes passed in parameter
@@ -114,7 +120,7 @@ function search(recipes) {
 	}
 
 	/** Main bar search function
-	 * Call displayRecipes() to display recipes which contain the input in title, ingredients, appliances and ustensils.
+	 * Call displayRecipes() to display recipes which contain the input in : title, ingredients, appliances and ustensils.
 	 * @param {*} request string user input
 	 */
 	function mainSearch(request) {
@@ -137,9 +143,12 @@ function search(recipes) {
 			}
 			// ingredients
 			recipe.ingredients.forEach(ingredient => {
-				if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
+				if (!goodRecipes.includes(recipe)) {
+					if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
+				}
 			})
 		})
+		console.log(goodRecipes)
 		recipesToDisplay = goodRecipes
 		filterKeywords()
 		displayRecipes()
@@ -269,12 +278,12 @@ function search(recipes) {
 
 
 		/**
-		 * Filter recipes according to the selecte filters + call displayRecipes()
+		 * Filter recipes according to the selected filters + call displayRecipes()
 		 */
 		function filterRecipes() {
 			// Create an array containing all filters (keywords) as name / type objects
 			myItemsFiltered = [];
-			recipesToDisplay = recipes;
+			// recipesToDisplay = recipes;
 			let badges = document.querySelectorAll('.badge-item')
 			badges.forEach(badge => {
 				let type
@@ -347,7 +356,7 @@ function search(recipes) {
 		addEventListenerFilterClose(item);
 		filterRecipes()
 		filterKeywords()
-		mainSearch(mainSearchInput.value)
+		displayRecipes()
 	}
 
 	/**
@@ -369,8 +378,7 @@ function search(recipes) {
 	function closefilter(ev) {
 		const target = ev.target.parentElement.parentElement;
 		target.remove();
-		manageKeywords()
-		filterRecipes();
+		manageKeywords();
 		mainSearch(mainSearchInput.value)
 		displayRecipes();
 		filterKeywords();
