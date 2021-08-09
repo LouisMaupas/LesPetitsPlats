@@ -281,6 +281,7 @@ function search(recipes) {
 		 * Filter recipes according to the selected filters + call displayRecipes()
 		 */
 		function filterRecipes() {
+			recipesToDisplay = recipes;
 			// Create an array containing all filters (keywords) as name / type objects
 			myItemsFiltered = [];
 			// recipesToDisplay = recipes;
