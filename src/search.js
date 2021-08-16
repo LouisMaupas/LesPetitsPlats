@@ -27,13 +27,6 @@ function search(recipes) {
 		recipeNotFound()
 	});
 
-
-	// A SUPPRIMER
-	document.getElementById('del').addEventListener('click', () => {
-		console.log(recipesToDisplay)
-	})
-
-	
 	/**
 	 * Display the recipes passed in parameter
 	 * @param {*} array 
@@ -82,7 +75,6 @@ function search(recipes) {
 		});
 	}
 	
-
 	/**
 	 * If user writes in a input, call filterSearch()
 	 */
@@ -189,7 +181,6 @@ function search(recipes) {
 		manageKeywords()
 	}
 
-
 	/**
 	* Create HTML of keywords in dropdowns 
 	* @param {*} dropdown that receives the keywords 
@@ -256,7 +247,6 @@ function search(recipes) {
 			});
 		}
 
-
 		/**
 		 * Add event listenner on click for the keywords
 		 */
@@ -275,7 +265,6 @@ function search(recipes) {
 		}
 		addListenerOnKeywords();
 	}
-
 
 		/**
 		 * Filter recipes according to the selected filters + call displayRecipes()
