@@ -1,0 +1,67 @@
+<mxfile host="app.diagrams.net" modified="2021-08-20T18:41:48.969Z" agent="5.0 (X11)" etag="VowWROa114ucLojojnBv" version="14.9.8" type="github">
+  <diagram id="Ep8rJk5GaAyseeA_tqJK" name="Page-1">
+    <mxGraphModel dx="868" dy="444" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-3" value="addMainSearchEvent()" style="swimlane;" vertex="1" parent="1">
+          <mxGeometry x="60" y="50" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-14" value="&lt;div&gt;Ecoute si l&#39;utilisateur saisi &lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;gt;= 2 caractères&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="k5W-xeNzSvtt3lGk6-Y6-3">
+          <mxGeometry x="20" y="70" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-4" value="mainSearch()" style="swimlane;" vertex="1" parent="1">
+          <mxGeometry x="340" y="50" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-5" value="filterRecipes()" style="swimlane;" vertex="1" parent="1">
+          <mxGeometry x="620" y="50" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-18" value="Si des filtres sont actifs, &lt;br&gt;applique les filtres actifs" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="k5W-xeNzSvtt3lGk6-Y6-5">
+          <mxGeometry x="35" y="70" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-6" value="filterKeywords()" style="swimlane;" vertex="1" parent="1">
+          <mxGeometry x="620" y="280" width="200" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-19" value="&lt;div&gt;Mets à jour la liste de &lt;br&gt;&lt;/div&gt;&lt;div&gt;mots-clés dans les filtres&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="k5W-xeNzSvtt3lGk6-Y6-6">
+          <mxGeometry x="25" y="70" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-7" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="260" y="125" as="sourcePoint" />
+            <mxPoint x="340" y="125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-8" value="" style="shape=flexArrow;endArrow=classic;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="124.5" as="sourcePoint" />
+            <mxPoint x="620" y="124.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-10" value="" style="shape=flexArrow;endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="k5W-xeNzSvtt3lGk6-Y6-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="720" y="200" as="sourcePoint" />
+            <mxPoint x="620" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-12" value="filterRecipes()" style="swimlane;" vertex="1" parent="1">
+          <mxGeometry x="330" y="280" width="200" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-20" value="Affiche les recettes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="k5W-xeNzSvtt3lGk6-Y6-12">
+          <mxGeometry x="40" y="80" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-13" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="620" y="370" as="sourcePoint" />
+            <mxPoint x="530" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-16" value="Appel la fonction de filtre" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="365" y="100" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="k5W-xeNzSvtt3lGk6-Y6-17" value="Traite la saisie" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="395" y="160" width="90" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
