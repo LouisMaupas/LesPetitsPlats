@@ -123,24 +123,30 @@ function search(recipes) {
 			if (recipe.name.indexOf(request) >= 0) {
 				if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
 			} 
+		})
 			// ustensils
+		recipesToDisplay.forEach(recipe => {
 			recipe.ustensils.forEach(ustensil => {
 				if (ustensil.indexOf(request) >= 0){
 					if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
 				} 
 			})
+
+		})
 			// appareils
+		recipesToDisplay.forEach(recipe => {
 			if (recipe.appliance.indexOf(request) >= 0){
 				if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
 			}
+		})
 			// ingredients
+		recipesToDisplay.forEach(recipe => {
 			recipe.ingredients.forEach(ingredient => {
 				if (!goodRecipes.includes(recipe)) {
 					if (ingredient.ingredient.indexOf(request) >= 0) goodRecipes.push(recipe)
 				}
 			})
 		})
-		console.log(goodRecipes)
 		recipesToDisplay = goodRecipes
 		filterKeywords()
 		displayRecipes()
