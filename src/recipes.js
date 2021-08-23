@@ -20,7 +20,7 @@ const recipes = [
             },
             {
                 "ingredient" : "Sucre",
-                "quantite" : 30,
+                "quantity" : 30,
                 "unit" : "grammes"
             },
             {
@@ -40,7 +40,7 @@ const recipes = [
             {
                 "ingredient" : "Thon Rouge (ou blanc)",
                 "quantity" : 200,
-                "unit" : "grammes"
+                "unit" : "g"
             },
             {
                 "ingredient" : "Concombre",

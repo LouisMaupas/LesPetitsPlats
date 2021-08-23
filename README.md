@@ -6,4 +6,5 @@
     <li>Bootstrap 5</li>
     <li>Algorithm</li>
     <li>diagrams jgraph</li>
+    <li>JSbench</li>
 </ul>
