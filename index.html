@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="public/css/bootstrap-grid.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/style.css">
-    <title>Les petits plats</title>
+    <title>Les petits plats - 2nd</title>
 </head>
 <body>
     <div id="main" class="container-fluid mt-5 p-0">
@@ -22,16 +22,22 @@
             </div>
         </div>
     <!--BARRE DE RECHERCHE-->
-        <nav class="navbar navbar-light bg-light">
-            <form class="container-fluid w-100">
-              <div class="input-group">
-                <input id="main-search-bar" type="text" class="form-control search-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" aria-label="" aria-describedby="basic-addon1">
-                <span class="input-group-text" id="basic-addon1">
-                    <img id="logo-search" src="public/logos/logo-search.svg" alt="logo barre de recherche"/>
-                </span>
-              </div>
-            </form>
-          </nav>
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid w-100">
+        <div class="input-group">
+            <input id="main-search-bar" type="text" class="form-control search-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" aria-label="" aria-describedby="basic-addon1">
+            <span class="input-group-text" id="basic-addon1">
+                <img id="logo-search" src="public/logos/logo-search.svg" alt="logo barre de recherche"/>
+            </span>
+        </div>
+        </form>
+    </nav>
+    <!--MESSAGE ALERT-->
+    <div id="alert-message" class="d-none">
+        <p>
+            Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ...
+        </p>
+    </div>
     <!--DROPDOWNS-->
     <div class="mb-4 mt-3 d-flex">
         <div class="drops-and-badgs">
