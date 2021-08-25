@@ -429,16 +429,16 @@ function search(recipes) {
 		manageKeywords();
 	}
 
-/**
- * Display a warning to the user that the search was unsucessful
- */
-function recipeNotFound() {
-	/* const text = document.createElement('div')
-	text.classList.add('recipe-not-found')
-	text.innerText = "Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ... "
-	document.body.append(text)*/
-	if (grid.hasChildNodes() === false) alert("Aucune recette ne correspond à votre critère… vous pouvez chercher 'tarte aux pommes', 'poisson' ...")
-}
+	/**
+	 * Display a warning to the user that the search was unsucessful
+	 */
+	function recipeNotFound() {
+		if (grid.hasChildNodes() === false) {
+			document.getElementById('alert-message').classList.remove('d-none')
+		} else {
+			document.getElementById('alert-message').classList.add('d-none')
+		}
+	}
 
 }
 
