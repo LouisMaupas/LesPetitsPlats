@@ -118,8 +118,8 @@ function search(recipes) {
 	function mainSearch(request) {
 		filterRecipes()
 		let goodRecipes = []
-		recipesToDisplay.forEach(recipe => {
 			// titre
+		recipesToDisplay.forEach(recipe => {
 			if (recipe.name.indexOf(request) >= 0) {
 				if (!goodRecipes.includes(recipe)) goodRecipes.push(recipe)
 			} 
