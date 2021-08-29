@@ -116,6 +116,7 @@ function search(recipes) {
 	 * @param {*} request string user input
 	 */
 	function mainSearch(request) {
+		recipesToDisplay = recipes
 		filterRecipes()
 		let goodRecipes = []
 		recipesToDisplay.forEach(recipe => {
@@ -269,10 +270,8 @@ function search(recipes) {
 		 * Filter recipes according to the selected filters + call displayRecipes()
 		 */
 		function filterRecipes() {
-			recipesToDisplay = recipes;
 			// Create an array containing all filters (keywords) as name / type objects
 			myItemsFiltered = [];
-			// recipesToDisplay = recipes;
 			let badges = document.querySelectorAll('.badge-item')
 			badges.forEach(badge => {
 				let type
@@ -369,7 +368,6 @@ function search(recipes) {
 		target.remove();
 		manageKeywords();
 		mainSearch(mainSearchInput.value)
-		displayRecipes();
 		filterKeywords();
 	}
 
