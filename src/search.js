@@ -84,7 +84,6 @@ function search(recipes) {
 					if (input.value.length > 2) filtersSearch(input.value, input.id)
 					if (input.value.length <= 2) {
 						filterKeywords()
-						manageKeywords()
 					}
 				});
 				input.addEventListener('click', () => {
@@ -97,18 +96,20 @@ function search(recipes) {
 	 * If user writes at least 3 characters in the main search bar, call recipesToDisplay()
 	 */
 	function addMainSearchEvent() {
-		mainSearchInput.addEventListener('keyup', function(e) {
-			recipeNotFound()
-			if (mainSearchInput.value.length >= 2) {
+		mainSearchInput.addEventListener('keyup', function() {
+			if (mainSearchInput.value.length > 2) {
 				mainSearch(mainSearchInput.value)
-
-			}
-			if ((mainSearchInput.value.length <= 2) && (e.key === 'Backspace')) {
-				recipesToDisplay = recipes
-				filterRecipes()
-				displayRecipes(recipesToDisplay)
+				recipeNotFound()
 			}
 		});
+		mainSearchInput.addEventListener('keydown', function(){
+			if (mainSearchInput.value.length <= 2) {
+				filterRecipes()
+				displayRecipes(recipesToDisplay)
+				recipeNotFound()
+				filterKeywords()
+			}
+		})
 	}
 
 	/** Main bar search function
@@ -270,6 +271,7 @@ function search(recipes) {
 		 * Filter recipes according to the selected filters + call displayRecipes()
 		 */
 		function filterRecipes() {
+			recipesToDisplay = recipes
 			// Create an array containing all filters (keywords) as name / type objects
 			myItemsFiltered = [];
 			let badges = document.querySelectorAll('.badge-item')
@@ -366,7 +368,6 @@ function search(recipes) {
 	function closefilter(ev) {
 		const target = ev.target.parentElement.parentElement;
 		target.remove();
-		manageKeywords();
 		mainSearch(mainSearchInput.value)
 		filterKeywords();
 	}
@@ -431,7 +432,7 @@ function search(recipes) {
 	 * Display a warning to the user that the search was unsucessful
 	 */
 	function recipeNotFound() {
-		if (grid.hasChildNodes() === false) {
+		if (recipesToDisplay.length === 0) {
 			document.getElementById('alert-message').classList.remove('d-none')
 		} else {
 			document.getElementById('alert-message').classList.add('d-none')
