@@ -376,6 +376,7 @@ function search(recipes) {
 		target.remove();
 		manageKeywords();
 		mainSearch(mainSearchInput.value)
+		filterKeywords();
 	}
 
 	/**
