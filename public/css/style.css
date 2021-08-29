@@ -81,6 +81,10 @@ body * {
     margin-right: 20px;
 }
 
+.badge__text {
+    color: white;
+}
+
 .dropdown-header {
     position: relative;
     padding: 0;
