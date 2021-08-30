@@ -25,6 +25,10 @@ body * {
     display: none;
 }
 
+.w-33 {
+    width: 33%;
+} 
+
 /* SEARCH BAR */
 .search-input {
     height: 69px;
@@ -183,7 +187,7 @@ body * {
 
 .grid-item {
     width: 100%;
-    border: 1px solid black;
+    box-shadow: 1px 3px 4px -1px #000000;
     margin: auto;
     height: 364px;
     line-height: 1.2rem;
