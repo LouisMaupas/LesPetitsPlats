@@ -184,28 +184,8 @@ function search(recipes) {
 
 	/**
 	* Create HTML of keywords in dropdowns 
-	* @param {*} dropdown that receives the keywords 
 	*/
-	function manageKeywords(dropdown = 'all') {
-		switch (dropdown) {
-			case 'ing':
-				displayIng()
-				break;
-			case 'app':
-				displayApp()
-				break;
-			case 'Ust':
-				displayUst()
-				break;
-			case 'all':
-				displayIng()
-				displayApp()
-				displayUst()
-				break;
-			default:
-				console.log(`Erreur dans le switch de displayItems()`);
-		}
-
+	function manageKeywords() {
 		// ingredients
 		function displayIng() {
 			allIngredients.sort();
@@ -264,6 +244,9 @@ function search(recipes) {
 				);
 			})
 		}
+		displayIng()
+		displayApp()
+		displayUst()
 		addListenerOnKeywords();
 	}
 
