@@ -422,6 +422,30 @@ function search(recipes) {
 		}
 	}
 
+	(function inputsNoDouble() {
+		for (const input of inputs) {
+			input.addEventListener('click', function() {
+				noDouble()
+			})
+		}
+	})()
+
+	// TODO a appeller quand un filtre est crée
+	function noDouble() {
+		if (document.getElementsByClassName('badge__text')) {
+			let badges = document.getElementsByClassName('badge__text')
+			for(const badge of badges) {
+				// recup tous les filtres généré => si ca match supprimer le html
+				let badgeName = badge.textContent
+				let filters = document.querySelectorAll('.filter-item')
+				filters.forEach(filtre => {
+					let filtreName = filtre.children[0].innerText
+					if (filtreName === badgeName) {filtre.remove()}
+				})
+			}
+		}
+	}
+
 }
 
 
